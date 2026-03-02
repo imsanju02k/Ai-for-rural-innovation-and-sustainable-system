@@ -48,29 +48,240 @@ const DiseaseDetection = () => {
         if (!selectedImage || !selectedCrop) return
 
         setAnalyzing(true)
-        // Simulate API call
+        
+        // Disease database by crop type
+        const diseaseDatabase = {
+            rice: [
+                {
+                    disease: 'Rice Blast',
+                    confidence: 92,
+                    severity: 'High',
+                    symptoms: 'Brown spots on leaves, wilting, reduced growth',
+                    causes: 'Fungal infection, high humidity, poor drainage',
+                    treatments: [
+                        {
+                            name: 'Tricyclazole',
+                            type: 'Chemical',
+                            dosage: '0.6g per liter',
+                            timing: 'Apply at tillering and booting stage',
+                        },
+                        {
+                            name: 'Neem Oil',
+                            type: 'Organic',
+                            dosage: '5ml per liter',
+                            timing: 'Spray every 7 days',
+                        },
+                    ],
+                },
+                {
+                    disease: 'Brown Spot',
+                    confidence: 88,
+                    severity: 'Medium',
+                    symptoms: 'Circular brown spots on leaves, yellowing',
+                    causes: 'Fungal pathogen, nutrient deficiency',
+                    treatments: [
+                        {
+                            name: 'Mancozeb',
+                            type: 'Chemical',
+                            dosage: '2g per liter',
+                            timing: 'Spray at 10-day intervals',
+                        },
+                        {
+                            name: 'Balanced Fertilizer',
+                            type: 'Organic',
+                            dosage: 'As per soil test',
+                            timing: 'Apply during land preparation',
+                        },
+                    ],
+                },
+            ],
+            wheat: [
+                {
+                    disease: 'Wheat Rust',
+                    confidence: 90,
+                    severity: 'High',
+                    symptoms: 'Orange-red pustules on leaves and stems',
+                    causes: 'Fungal infection, favorable weather conditions',
+                    treatments: [
+                        {
+                            name: 'Propiconazole',
+                            type: 'Chemical',
+                            dosage: '1ml per liter',
+                            timing: 'Apply at first sign of disease',
+                        },
+                        {
+                            name: 'Sulfur Dust',
+                            type: 'Organic',
+                            dosage: '3kg per acre',
+                            timing: 'Dust early morning',
+                        },
+                    ],
+                },
+                {
+                    disease: 'Powdery Mildew',
+                    confidence: 85,
+                    severity: 'Medium',
+                    symptoms: 'White powdery coating on leaves',
+                    causes: 'Fungal infection, high humidity',
+                    treatments: [
+                        {
+                            name: 'Sulfur Fungicide',
+                            type: 'Chemical',
+                            dosage: '2g per liter',
+                            timing: 'Spray at 15-day intervals',
+                        },
+                        {
+                            name: 'Milk Spray',
+                            type: 'Organic',
+                            dosage: '1:10 milk to water ratio',
+                            timing: 'Spray weekly',
+                        },
+                    ],
+                },
+            ],
+            cotton: [
+                {
+                    disease: 'Cotton Leaf Curl',
+                    confidence: 93,
+                    severity: 'High',
+                    symptoms: 'Leaf curling, vein thickening, stunted growth',
+                    causes: 'Viral infection transmitted by whiteflies',
+                    treatments: [
+                        {
+                            name: 'Imidacloprid',
+                            type: 'Chemical',
+                            dosage: '0.5ml per liter',
+                            timing: 'Control whitefly vectors',
+                        },
+                        {
+                            name: 'Remove Infected Plants',
+                            type: 'Organic',
+                            dosage: 'N/A',
+                            timing: 'Immediately upon detection',
+                        },
+                    ],
+                },
+                {
+                    disease: 'Bacterial Blight',
+                    confidence: 87,
+                    severity: 'Medium',
+                    symptoms: 'Water-soaked lesions, angular leaf spots',
+                    causes: 'Bacterial infection, high moisture',
+                    treatments: [
+                        {
+                            name: 'Copper Oxychloride',
+                            type: 'Chemical',
+                            dosage: '3g per liter',
+                            timing: 'Spray at 10-day intervals',
+                        },
+                        {
+                            name: 'Bordeaux Mixture',
+                            type: 'Organic',
+                            dosage: '1% solution',
+                            timing: 'Spray preventively',
+                        },
+                    ],
+                },
+            ],
+            sugarcane: [
+                {
+                    disease: 'Red Rot',
+                    confidence: 91,
+                    severity: 'High',
+                    symptoms: 'Reddening of internal tissues, wilting',
+                    causes: 'Fungal infection, waterlogging',
+                    treatments: [
+                        {
+                            name: 'Carbendazim',
+                            type: 'Chemical',
+                            dosage: '1g per liter',
+                            timing: 'Sett treatment before planting',
+                        },
+                        {
+                            name: 'Hot Water Treatment',
+                            type: 'Organic',
+                            dosage: '52°C for 30 minutes',
+                            timing: 'Treat setts before planting',
+                        },
+                    ],
+                },
+                {
+                    disease: 'Smut',
+                    confidence: 86,
+                    severity: 'Medium',
+                    symptoms: 'Black whip-like structure from growing point',
+                    causes: 'Fungal infection through soil',
+                    treatments: [
+                        {
+                            name: 'Propiconazole',
+                            type: 'Chemical',
+                            dosage: '1ml per liter',
+                            timing: 'Spray at early stage',
+                        },
+                        {
+                            name: 'Remove Infected Shoots',
+                            type: 'Organic',
+                            dosage: 'N/A',
+                            timing: 'Before spore release',
+                        },
+                    ],
+                },
+            ],
+            vegetables: [
+                {
+                    disease: 'Early Blight',
+                    confidence: 89,
+                    severity: 'Medium',
+                    symptoms: 'Dark concentric rings on leaves, yellowing',
+                    causes: 'Fungal infection, warm humid weather',
+                    treatments: [
+                        {
+                            name: 'Chlorothalonil',
+                            type: 'Chemical',
+                            dosage: '2g per liter',
+                            timing: 'Spray at 7-10 day intervals',
+                        },
+                        {
+                            name: 'Baking Soda Spray',
+                            type: 'Organic',
+                            dosage: '1 tablespoon per liter',
+                            timing: 'Spray weekly',
+                        },
+                    ],
+                },
+                {
+                    disease: 'Powdery Mildew',
+                    confidence: 84,
+                    severity: 'Low',
+                    symptoms: 'White powdery growth on leaves',
+                    causes: 'Fungal infection, dry conditions',
+                    treatments: [
+                        {
+                            name: 'Sulfur Fungicide',
+                            type: 'Chemical',
+                            dosage: '2g per liter',
+                            timing: 'Spray at first sign',
+                        },
+                        {
+                            name: 'Neem Oil',
+                            type: 'Organic',
+                            dosage: '5ml per liter',
+                            timing: 'Spray every 7 days',
+                        },
+                    ],
+                },
+            ],
+        };
+
+        // Simulate API call with crop-specific disease detection
         setTimeout(() => {
-            setResult({
-                disease: 'Rice Blast',
-                confidence: 92,
-                severity: 'High',
-                treatments: [
-                    {
-                        name: 'Tricyclazole',
-                        type: 'Chemical',
-                        dosage: '0.6g per liter',
-                        timing: 'Apply at tillering and booting stage',
-                    },
-                    {
-                        name: 'Neem Oil',
-                        type: 'Organic',
-                        dosage: '5ml per liter',
-                        timing: 'Spray every 7 days',
-                    },
-                ],
-            })
-            setAnalyzing(false)
-        }, 2000)
+            const cropDiseases = diseaseDatabase[selectedCrop] || diseaseDatabase.rice;
+            // Randomly select a disease from the crop's disease list
+            const randomDisease = cropDiseases[Math.floor(Math.random() * cropDiseases.length)];
+            
+            setResult(randomDisease);
+            setAnalyzing(false);
+        }, 2000);
     }
 
     if (result) {
@@ -143,11 +354,11 @@ const DiseaseDetection = () => {
                         <div className="space-y-2 text-sm">
                             <p className="text-neutral-text-secondary">
                                 <span className="font-medium text-neutral-text">Symptoms:</span>{' '}
-                                Brown spots on leaves, wilting, reduced growth
+                                {result.symptoms}
                             </p>
                             <p className="text-neutral-text-secondary">
                                 <span className="font-medium text-neutral-text">Causes:</span>{' '}
-                                Fungal infection, high humidity, poor drainage
+                                {result.causes}
                             </p>
                         </div>
                     </div>
