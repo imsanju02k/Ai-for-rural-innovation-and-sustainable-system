@@ -15,6 +15,7 @@ import SensorMonitor from './pages/SensorMonitor'
 import Alerts from './pages/Alerts'
 import Community from './pages/Community'
 import Profile from './pages/Profile'
+import YieldPrediction from './pages/YieldPrediction'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -67,6 +68,10 @@ function App() {
         <Route 
           path="/profile" 
           element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} 
+        />
+        <Route 
+          path="/yield-prediction" 
+          element={isAuthenticated ? <YieldPrediction /> : <Navigate to="/login" />} 
         />
       </Routes>
     </Router>
