@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import Header from '../components/Header'
 import BottomNav from '../components/BottomNav'
 import { Trophy, Star, Target, Zap, Award, TrendingUp } from 'lucide-react'
 
 const Achievements = () => {
     const { isDark } = useTheme()
+    const { t } = useLanguage()
     const [achievements, setAchievements] = useState([
         {
             id: 1,
@@ -64,7 +66,7 @@ const Achievements = () => {
 
     return (
         <div className={`min-h-screen pb-20 transition-theme duration-300 ${isDark ? 'bg-dark-bg' : 'bg-neutral-bg'}`}>
-            <Header showBack={true} title="Achievements" />
+            <Header showBack={true} title={t('achievements')} />
 
             <div className="max-w-md mx-auto px-4 py-6">
                 {/* Stats */}
@@ -75,7 +77,7 @@ const Achievements = () => {
                             {unlockedCount}
                         </p>
                         <p className={`text-xs ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
-                            Unlocked
+                            {t('unlocked')}
                         </p>
                     </div>
                     <div className={`card p-4 text-center ${isDark ? 'bg-dark-surface' : 'bg-white'}`}>
@@ -84,7 +86,7 @@ const Achievements = () => {
                             {totalPoints}
                         </p>
                         <p className={`text-xs ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
-                            Points
+                            {t('points')}
                         </p>
                     </div>
                     <div className={`card p-4 text-center ${isDark ? 'bg-dark-surface' : 'bg-white'}`}>
@@ -93,7 +95,7 @@ const Achievements = () => {
                             {Math.round((unlockedCount / achievements.length) * 100)}%
                         </p>
                         <p className={`text-xs ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
-                            Complete
+                            {t('complete')}
                         </p>
                     </div>
                 </div>
@@ -106,21 +108,21 @@ const Achievements = () => {
                             <div
                                 key={achievement.id}
                                 className={`card p-4 transition-all ${achievement.unlocked
-                                        ? isDark
-                                            ? 'bg-dark-surface border-primary'
-                                            : 'bg-white border-primary'
-                                        : isDark
-                                            ? 'bg-dark-surface opacity-60'
-                                            : 'bg-white opacity-60'
+                                    ? isDark
+                                        ? 'bg-dark-surface border-primary'
+                                        : 'bg-white border-primary'
+                                    : isDark
+                                        ? 'bg-dark-surface opacity-60'
+                                        : 'bg-white opacity-60'
                                     }`}
                             >
                                 <div className="flex items-start gap-4">
                                     <div
                                         className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${achievement.unlocked
-                                                ? 'bg-primary bg-opacity-20'
-                                                : isDark
-                                                    ? 'bg-dark-divider'
-                                                    : 'bg-neutral-divider'
+                                            ? 'bg-primary bg-opacity-20'
+                                            : isDark
+                                                ? 'bg-dark-divider'
+                                                : 'bg-neutral-divider'
                                             }`}
                                     >
                                         <Icon
@@ -144,13 +146,13 @@ const Achievements = () => {
                                                     ></div>
                                                 </div>
                                                 <p className={`text-xs mt-1 ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
-                                                    {achievement.progress}% complete
+                                                    {achievement.progress}{t('completePercentage')}
                                                 </p>
                                             </div>
                                         )}
                                         {achievement.unlocked && (
                                             <p className={`text-xs mt-1 text-status-success`}>
-                                                Unlocked on {new Date(achievement.unlockedDate).toLocaleDateString()}
+                                                {t('unlockedOn')} {new Date(achievement.unlockedDate).toLocaleDateString()}
                                             </p>
                                         )}
                                     </div>

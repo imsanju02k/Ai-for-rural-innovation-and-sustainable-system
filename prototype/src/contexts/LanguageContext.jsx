@@ -116,6 +116,8 @@ const translations = {
         farmNameRequired: 'Farm name is required',
         editFarm: 'Edit Farm',
         addNewFarm: 'Add New Farm',
+        completePercentage: '% complete',
+        unlockedOn: 'Unlocked on',
     },
     kn: {
         // Common
@@ -228,6 +230,8 @@ const translations = {
         farmNameRequired: 'ಜಮೀನಿನ ಹೆಸರು ಅಗತ್ಯವಾಗಿದೆ',
         editFarm: 'ಜಮೀನು ಸಂಪಾದಿಸಿ',
         addNewFarm: 'ಹೊಸ ಜಮೀನು ಸೇರಿಸಿ',
+        completePercentage: '% ಪೂರ್ಣ',
+        unlockedOn: 'ಅನ್‌ಲಾಕ್ ಮಾಡಲಾಗಿದೆ',
     },
     hi: {
         // Common
@@ -340,6 +344,8 @@ const translations = {
         farmNameRequired: 'खेत का नाम आवश्यक है',
         editFarm: 'खेत संपादित करें',
         addNewFarm: 'नया खेत जोड़ें',
+        completePercentage: '% पूर्ण',
+        unlockedOn: 'अनलॉक किया गया',
     },
 }
 
