@@ -60,6 +60,52 @@ const translations = {
         unlocked: 'Unlocked',
         points: 'Points',
         complete: 'Complete',
+
+        // Settings - Notifications
+        weatherAlerts: 'Weather Alerts',
+        getNotifiedAboutWeatherChanges: 'Get notified about weather changes',
+        diseaseAlerts: 'Disease Alerts',
+        cropDiseaseDetectionNotifications: 'Crop disease detection notifications',
+        marketAlerts: 'Market Alerts',
+        priceChangesAndMarketUpdates: 'Price changes and market updates',
+        irrigationReminders: 'Irrigation Reminders',
+        wateringScheduleReminders: 'Watering schedule reminders',
+        fertilizerReminders: 'Fertilizer Reminders',
+        fertilizationScheduleAlerts: 'Fertilization schedule alerts',
+
+        // Settings - Account
+        phoneNumber: 'Phone Number',
+        email: 'Email',
+        notSet: 'Not set',
+
+        // Settings - Privacy
+        dataSharing: 'Data Sharing',
+        analytics: 'Analytics',
+
+        // Settings - App Info
+        appVersion: 'App Version',
+        selectLanguage: 'Select Language',
+        appearance: 'Appearance',
+        darkMode: 'Dark Mode',
+        enabled: 'Enabled',
+        disabled: 'Disabled',
+        confirmLogout: 'Are you sure you want to logout?',
+
+        // Dashboard
+        quickStats: 'Quick Stats',
+        cropHealth: 'Crop Health',
+        weather: 'Weather',
+        marketPrice: 'Market Price',
+        waterUsage: 'Water Usage',
+        mainActions: 'Main Actions',
+        diseaseDetection: 'Disease Detection',
+        yieldPrediction: 'Yield Prediction',
+        marketPrices: 'Market Prices',
+        resourceOptimizer: 'Resource Optimizer',
+        askAdvisor: 'Ask Advisor',
+        sensorMonitor: 'Sensor Monitor',
+        recentActivity: 'Recent Activity',
+        view: 'View',
     },
     kn: {
         // Common
@@ -116,6 +162,52 @@ const translations = {
         unlocked: 'ಅನ್‌ಲಾಕ್ ಮಾಡಲಾಗಿದೆ',
         points: 'ಪಾಯಿಂಟ್‌ಗಳು',
         complete: 'ಪೂರ್ಣ',
+
+        // Settings - Notifications
+        weatherAlerts: 'ಹವಾಮಾನ ಎಚ್ಚರಿಕೆಗಳು',
+        getNotifiedAboutWeatherChanges: 'ಹವಾಮಾನ ಬದಲಾವಣೆಗಳ ಬಗ್ಗೆ ಅಧಿಸೂಚನೆ ಪಡೆಯಿರಿ',
+        diseaseAlerts: 'ರೋಗ ಎಚ್ಚರಿಕೆಗಳು',
+        cropDiseaseDetectionNotifications: 'ಬೆಳೆ ರೋಗ ಪತ್ತೆ ಅಧಿಸೂಚನೆಗಳು',
+        marketAlerts: 'ಮಾರುಕಟ್ಟೆ ಎಚ್ಚರಿಕೆಗಳು',
+        priceChangesAndMarketUpdates: 'ಬೆಲೆ ಬದಲಾವಣೆಗಳು ಮತ್ತು ಮಾರುಕಟ್ಟೆ ನವೀಕರಣಗಳು',
+        irrigationReminders: 'ನೀರಾವರಣ ನೆನಪುಗಳು',
+        wateringScheduleReminders: 'ನೀರಾವರಣ ವೇಳಾಪಟ್ಟಿ ನೆನಪುಗಳು',
+        fertilizerReminders: 'ರಸಗೊಬ್ಬರ ನೆನಪುಗಳು',
+        fertilizationScheduleAlerts: 'ರಸಗೊಬ್ಬರ ವೇಳಾಪಟ್ಟಿ ಎಚ್ಚರಿಕೆಗಳು',
+
+        // Settings - Account
+        phoneNumber: 'ಫೋನ್ ಸಂಖ್ಯೆ',
+        email: 'ಇಮೇಲ್',
+        notSet: 'ಹೊಂದಿಸಲಾಗಿಲ್ಲ',
+
+        // Settings - Privacy
+        dataSharing: 'ಡೇಟಾ ಹಂಚಿಕೆ',
+        analytics: 'ವಿಶ್ಲೇಷಣೆ',
+
+        // Settings - App Info
+        appVersion: 'ಅಪ್ಲಿಕೇಶನ್ ಆವೃತ್ತಿ',
+        selectLanguage: 'ಭಾಷೆ ಆಯ್ಕೆ ಮಾಡಿ',
+        appearance: 'ನೋಟ',
+        darkMode: 'ಡಾರ್ಕ್ ಮೋಡ್',
+        enabled: 'ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ',
+        disabled: 'ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ',
+        confirmLogout: 'ನೀವು ಲಾಗ್ ಔಟ್ ಮಾಡಲು ಖಚಿತವಾಗಿದ್ದೀರಾ?',
+
+        // Dashboard
+        quickStats: 'ತ್ವರಿತ ಅಂಕಿಅಂಶಗಳು',
+        cropHealth: 'ಬೆಳೆ ಆರೋಗ್ಯ',
+        weather: 'ಹವಾಮಾನ',
+        marketPrice: 'ಮಾರುಕಟ್ಟೆ ಬೆಲೆ',
+        waterUsage: 'ನೀರಿನ ಬಳಕೆ',
+        mainActions: 'ಮುಖ್ಯ ಕ್ರಿಯೆಗಳು',
+        diseaseDetection: 'ರೋಗ ಪತ್ತೆ',
+        yieldPrediction: 'ಇಳುವರಿ ಮುನ್ನಡೆ',
+        marketPrices: 'ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು',
+        resourceOptimizer: 'ಸಂಪನ್ಮೂಲ ಆಪ್ಟಿಮೈজರ್',
+        askAdvisor: 'ಸಲಹೆಗಾರನನ್ನು ಕೇಳಿ',
+        sensorMonitor: 'ಸಂವೇದಕ ಮಾನಿಟರ್',
+        recentActivity: 'ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ',
+        view: 'ವೀಕ್ಷಣೆ',
     },
     hi: {
         // Common
@@ -172,6 +264,52 @@ const translations = {
         unlocked: 'अनलॉक किया गया',
         points: 'अंक',
         complete: 'पूर्ण',
+
+        // Settings - Notifications
+        weatherAlerts: 'मौसम सतर्कताएं',
+        getNotifiedAboutWeatherChanges: 'मौसम परिवर्तन के बारे में सूचित रहें',
+        diseaseAlerts: 'रोग सतर्कताएं',
+        cropDiseaseDetectionNotifications: 'फसल रोग पहचान सूचनाएं',
+        marketAlerts: 'बाजार सतर्कताएं',
+        priceChangesAndMarketUpdates: 'कीमत परिवर्तन और बाजार अपडेट',
+        irrigationReminders: 'सिंचाई अनुस्मारक',
+        wateringScheduleReminders: 'पानी देने के शेड्यूल अनुस्मारक',
+        fertilizerReminders: 'उर्वरक अनुस्मारक',
+        fertilizationScheduleAlerts: 'उर्वरक शेड्यूल सतर्कताएं',
+
+        // Settings - Account
+        phoneNumber: 'फोन नंबर',
+        email: 'ईमेल',
+        notSet: 'सेट नहीं है',
+
+        // Settings - Privacy
+        dataSharing: 'डेटा साझाकरण',
+        analytics: 'विश्लेषण',
+
+        // Settings - App Info
+        appVersion: 'ऐप संस्करण',
+        selectLanguage: 'भाषा चुनें',
+        appearance: 'दिखावट',
+        darkMode: 'डार्क मोड',
+        enabled: 'सक्षम',
+        disabled: 'अक्षम',
+        confirmLogout: 'क्या आप लॉगआउट करना सुनिश्चित हैं?',
+
+        // Dashboard
+        quickStats: 'त्वरित आंकड़े',
+        cropHealth: 'फसल स्वास्थ्य',
+        weather: 'मौसम',
+        marketPrice: 'बाजार मूल्य',
+        waterUsage: 'जल उपयोग',
+        mainActions: 'मुख्य कार्य',
+        diseaseDetection: 'रोग पहचान',
+        yieldPrediction: 'उपज पूर्वानुमान',
+        marketPrices: 'बाजार मूल्य',
+        resourceOptimizer: 'संसाधन अनुकूलक',
+        askAdvisor: 'सलाहकार से पूछें',
+        sensorMonitor: 'सेंसर मॉनिटर',
+        recentActivity: 'हाल की गतिविधि',
+        view: 'देखें',
     },
 }
 

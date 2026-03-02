@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import BottomNav from '../components/BottomNav'
+import { useLanguage } from '../contexts/LanguageContext'
+import { useTheme } from '../contexts/ThemeContext'
 import {
     Camera, TrendingUp, DollarSign, Droplet,
     MessageCircle, Activity, Leaf, Sun,
@@ -9,17 +11,19 @@ import {
 
 const Dashboard = () => {
     const navigate = useNavigate()
+    const { t } = useLanguage()
+    const { isDark } = useTheme()
 
     const quickStats = [
         {
-            title: 'Crop Health',
+            titleKey: 'cropHealth',
             value: '85%',
             icon: Leaf,
             color: 'text-green-600',
             bgColor: 'bg-green-50',
         },
         {
-            title: 'Weather',
+            titleKey: 'weather',
             value: '32°C',
             subtitle: 'Sunny',
             icon: Sun,
@@ -27,7 +31,7 @@ const Dashboard = () => {
             bgColor: 'bg-orange-50',
         },
         {
-            title: 'Market Price',
+            titleKey: 'marketPrice',
             value: '₹2,550',
             subtitle: '↑12%',
             icon: TrendUp,
@@ -35,7 +39,7 @@ const Dashboard = () => {
             bgColor: 'bg-blue-50',
         },
         {
-            title: 'Water Usage',
+            titleKey: 'waterUsage',
             value: '68%',
             subtitle: 'Efficient',
             icon: Droplets,
@@ -46,42 +50,42 @@ const Dashboard = () => {
 
     const mainActions = [
         {
-            title: 'Disease Detection',
+            titleKey: 'diseaseDetection',
             icon: Camera,
             color: 'text-green-600',
             bgColor: 'bg-green-50',
             path: '/disease-detection',
         },
         {
-            title: 'Yield Prediction',
+            titleKey: 'yieldPrediction',
             icon: TrendingUp,
             color: 'text-blue-600',
             bgColor: 'bg-blue-50',
             path: '/yield-prediction',
         },
         {
-            title: 'Market Prices',
+            titleKey: 'marketPrices',
             icon: DollarSign,
             color: 'text-orange-600',
             bgColor: 'bg-orange-50',
             path: '/market-prices',
         },
         {
-            title: 'Resource Optimizer',
+            titleKey: 'resourceOptimizer',
             icon: Droplet,
             color: 'text-cyan-600',
             bgColor: 'bg-cyan-50',
             path: '/resource-optimizer',
         },
         {
-            title: 'Ask Advisor',
+            titleKey: 'askAdvisor',
             icon: MessageCircle,
             color: 'text-purple-600',
             bgColor: 'bg-purple-50',
             path: '/advisory',
         },
         {
-            title: 'Sensor Monitor',
+            titleKey: 'sensorMonitor',
             icon: Activity,
             color: 'text-red-600',
             bgColor: 'bg-red-50',
@@ -108,14 +112,14 @@ const Dashboard = () => {
     ]
 
     return (
-        <div className="min-h-screen bg-neutral-bg pb-20">
+        <div className={`min-h-screen pb-20 transition-theme duration-300 ${isDark ? 'bg-dark-bg' : 'bg-neutral-bg'}`}>
             <Header />
 
             <div className="max-w-md mx-auto px-4 py-6">
                 {/* Quick Stats */}
                 <div className="mb-6">
-                    <h2 className="text-lg font-semibold text-neutral-text mb-4">
-                        Quick Stats
+                    <h2 className={`text-lg font-semibold mb-4 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
+                        {t('quickStats')}
                     </h2>
                     <div className="flex overflow-x-auto space-x-4 pb-2 scrollbar-hide">
                         {quickStats.map((stat, index) => {
@@ -128,14 +132,14 @@ const Dashboard = () => {
                                     <div className={`w-12 h-12 ${stat.bgColor} rounded-full flex items-center justify-center mb-3`}>
                                         <Icon size={24} className={stat.color} />
                                     </div>
-                                    <p className="text-sm text-neutral-text-secondary mb-1">
-                                        {stat.title}
+                                    <p className={`text-sm mb-1 ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
+                                        {t(stat.titleKey)}
                                     </p>
-                                    <p className="text-2xl font-bold text-neutral-text">
+                                    <p className={`text-2xl font-bold ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
                                         {stat.value}
                                     </p>
                                     {stat.subtitle && (
-                                        <p className="text-sm text-neutral-text-secondary mt-1">
+                                        <p className={`text-sm mt-1 ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
                                             {stat.subtitle}
                                         </p>
                                     )}
@@ -147,8 +151,8 @@ const Dashboard = () => {
 
                 {/* Main Actions */}
                 <div className="mb-6">
-                    <h2 className="text-lg font-semibold text-neutral-text mb-4">
-                        Main Actions
+                    <h2 className={`text-lg font-semibold mb-4 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
+                        {t('mainActions')}
                     </h2>
                     <div className="grid grid-cols-2 gap-4">
                         {mainActions.map((action, index) => {
@@ -162,8 +166,8 @@ const Dashboard = () => {
                                     <div className={`w-16 h-16 ${action.bgColor} rounded-full flex items-center justify-center mb-3`}>
                                         <Icon size={32} className={action.color} />
                                     </div>
-                                    <p className="text-sm font-medium text-neutral-text">
-                                        {action.title}
+                                    <p className={`text-sm font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
+                                        {t(action.titleKey)}
                                     </p>
                                 </button>
                             )
@@ -173,22 +177,22 @@ const Dashboard = () => {
 
                 {/* Recent Activity */}
                 <div>
-                    <h2 className="text-lg font-semibold text-neutral-text mb-4">
-                        Recent Activity
+                    <h2 className={`text-lg font-semibold mb-4 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
+                        {t('recentActivity')}
                     </h2>
                     <div className="space-y-3">
                         {recentActivity.map((activity, index) => (
-                            <div key={index} className="card flex items-center justify-between">
+                            <div key={index} className={`card flex items-center justify-between ${isDark ? 'bg-dark-surface' : 'bg-white'}`}>
                                 <div>
-                                    <p className="text-sm font-medium text-neutral-text">
+                                    <p className={`text-sm font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
                                         {activity.title}
                                     </p>
-                                    <p className="text-xs text-neutral-text-secondary mt-1">
+                                    <p className={`text-xs mt-1 ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
                                         {activity.time}
                                     </p>
                                 </div>
                                 <button className="text-primary text-sm font-medium">
-                                    View
+                                    {t('view')}
                                 </button>
                             </div>
                         ))}

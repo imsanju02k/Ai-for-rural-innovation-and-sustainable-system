@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 import {
@@ -12,6 +13,7 @@ import { getItem, setItem, STORAGE_KEYS } from '../utils/localStorage';
 const Settings = () => {
     const navigate = useNavigate();
     const { theme, toggleTheme, isDark } = useTheme();
+    const { language, setLanguage, t } = useLanguage();
 
     const [notifications, setNotifications] = useState(() => {
         return getItem(STORAGE_KEYS.USER_SETTINGS, {
@@ -29,10 +31,6 @@ const Settings = () => {
         };
     });
 
-    const [language, setLanguage] = useState(() => {
-        return getItem(STORAGE_KEYS.APP_LANGUAGE, 'en');
-    });
-
     const [showLanguageModal, setShowLanguageModal] = useState(false);
 
     // Save settings whenever they change
@@ -42,10 +40,6 @@ const Settings = () => {
         setItem(STORAGE_KEYS.USER_SETTINGS, settings);
     }, [notifications]);
 
-    useEffect(() => {
-        setItem(STORAGE_KEYS.APP_LANGUAGE, language);
-    }, [language]);
-
     const handleNotificationToggle = (type) => {
         setNotifications(prev => ({
             ...prev,
@@ -54,7 +48,7 @@ const Settings = () => {
     };
 
     const handleLogout = () => {
-        if (window.confirm('Are you sure you want to logout?')) {
+        if (window.confirm(t('confirmLogout') || 'Are you sure you want to logout?')) {
             // Clear auth data
             localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
             localStorage.removeItem(STORAGE_KEYS.AUTH_PHONE);
@@ -69,22 +63,26 @@ const Settings = () => {
     ];
 
     const notificationTypes = [
-        { key: 'weather', label: 'Weather Alerts', description: 'Get notified about weather changes' },
-        { key: 'disease', label: 'Disease Alerts', description: 'Crop disease detection notifications' },
-        { key: 'market', label: 'Market Alerts', description: 'Price changes and market updates' },
-        { key: 'irrigation', label: 'Irrigation Reminders', description: 'Watering schedule reminders' },
-        { key: 'fertilizer', label: 'Fertilizer Reminders', description: 'Fertilization schedule alerts' },
+        { key: 'weather', labelKey: 'weatherAlerts', descriptionKey: 'getNotifiedAboutWeatherChanges' },
+        { key: 'disease', labelKey: 'diseaseAlerts', descriptionKey: 'cropDiseaseDetectionNotifications' },
+        { key: 'market', labelKey: 'marketAlerts', descriptionKey: 'priceChangesAndMarketUpdates' },
+        { key: 'irrigation', labelKey: 'irrigationReminders', descriptionKey: 'wateringScheduleReminders' },
+        { key: 'fertilizer', labelKey: 'fertilizerReminders', descriptionKey: 'fertilizationScheduleAlerts' },
     ];
+
+    const userProfile = getItem(STORAGE_KEYS.USER_PROFILE, {});
+    const userPhone = userProfile?.phone || getItem(STORAGE_KEYS.AUTH_PHONE, '+91 98765 43210');
+    const userEmail = userProfile?.email || 'Not set';
 
     return (
         <div className={`min-h-screen pb-20 transition-theme duration-300 ${isDark ? 'bg-dark-bg' : 'bg-neutral-bg'
             }`}>
-            <Header showBack={true} title="Settings" />
+            <Header showBack={true} title={t('settings')} />
 
             <div className="max-w-md mx-auto px-4 py-6">
                 <h1 className={`text-2xl font-bold mb-6 ${isDark ? 'text-dark-text' : 'text-neutral-text'
                     }`}>
-                    Settings
+                    {t('settings')}
                 </h1>
 
                 {/* Theme Section */}
@@ -92,7 +90,7 @@ const Settings = () => {
                     }`}>
                     <h2 className={`text-lg font-semibold mb-4 ${isDark ? 'text-dark-text' : 'text-neutral-text'
                         }`}>
-                        Appearance
+                        {t('appearance')}
                     </h2>
 
                     <div className="flex items-center justify-between">
@@ -105,11 +103,11 @@ const Settings = () => {
                             <div>
                                 <p className={`font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'
                                     }`}>
-                                    Dark Mode
+                                    {t('darkMode')}
                                 </p>
                                 <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
                                     }`}>
-                                    {isDark ? 'Enabled' : 'Disabled'}
+                                    {isDark ? t('enabled') : t('disabled')}
                                 </p>
                             </div>
                         </div>
@@ -133,7 +131,7 @@ const Settings = () => {
                         <Bell size={20} className="text-primary mr-3" />
                         <h2 className={`text-lg font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'
                             }`}>
-                            Notifications
+                            {t('notifications')}
                         </h2>
                     </div>
 
@@ -143,11 +141,11 @@ const Settings = () => {
                                 <div className="flex-1">
                                     <p className={`font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'
                                         }`}>
-                                        {type.label}
+                                        {t(type.labelKey)}
                                     </p>
                                     <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
                                         }`}>
-                                        {type.description}
+                                        {t(type.descriptionKey)}
                                     </p>
                                 </div>
                                 <button
@@ -177,7 +175,7 @@ const Settings = () => {
                             <div className="text-left">
                                 <p className={`font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'
                                     }`}>
-                                    Language
+                                    {t('language')}
                                 </p>
                                 <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
                                     }`}>
@@ -198,7 +196,7 @@ const Settings = () => {
                         <User size={20} className="text-primary mr-3" />
                         <h2 className={`text-lg font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'
                             }`}>
-                            Account
+                            {t('account')}
                         </h2>
                     </div>
 
@@ -206,21 +204,21 @@ const Settings = () => {
                         <div>
                             <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
                                 }`}>
-                                Phone Number
+                                {t('phoneNumber')}
                             </p>
                             <p className={`font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'
                                 }`}>
-                                {getItem(STORAGE_KEYS.AUTH_PHONE, '+91 98765 43210')}
+                                {userPhone}
                             </p>
                         </div>
                         <div>
                             <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
                                 }`}>
-                                Email
+                                {t('email')}
                             </p>
                             <p className={`font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'
                                 }`}>
-                                {getItem(STORAGE_KEYS.USER_PROFILE, {})?.email || 'Not set'}
+                                {userEmail}
                             </p>
                         </div>
                     </div>
@@ -233,7 +231,7 @@ const Settings = () => {
                         <Shield size={20} className="text-primary mr-3" />
                         <h2 className={`text-lg font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'
                             }`}>
-                            Privacy
+                            {t('privacy')}
                         </h2>
                     </div>
 
@@ -241,7 +239,7 @@ const Settings = () => {
                         <div className="flex items-center justify-between">
                             <p className={`font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'
                                 }`}>
-                                Data Sharing
+                                {t('dataSharing')}
                             </p>
                             <button className="relative inline-flex h-8 w-14 items-center rounded-full bg-gray-300">
                                 <span className="inline-block h-6 w-6 transform rounded-full bg-white translate-x-1" />
@@ -250,7 +248,7 @@ const Settings = () => {
                         <div className="flex items-center justify-between">
                             <p className={`font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'
                                 }`}>
-                                Analytics
+                                {t('analytics')}
                             </p>
                             <button className="relative inline-flex h-8 w-14 items-center rounded-full bg-primary">
                                 <span className="inline-block h-6 w-6 transform rounded-full bg-white translate-x-7" />
@@ -268,7 +266,7 @@ const Settings = () => {
                             <div>
                                 <p className={`font-medium ${isDark ? 'text-dark-text' : 'text-neutral-text'
                                     }`}>
-                                    App Version
+                                    {t('appVersion')}
                                 </p>
                                 <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
                                     }`}>
@@ -286,7 +284,7 @@ const Settings = () => {
                         }`}
                 >
                     <LogOut size={20} className="text-status-error mr-3" />
-                    <span className="font-medium text-status-error">Logout</span>
+                    <span className="font-medium text-status-error">{t('logout')}</span>
                 </button>
             </div>
 
@@ -297,7 +295,7 @@ const Settings = () => {
                         }`}>
                         <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-dark-text' : 'text-neutral-text'
                             }`}>
-                            Select Language
+                            {t('selectLanguage')}
                         </h3>
                         <div className="space-y-2">
                             {languages.map((lang) => (
@@ -308,8 +306,8 @@ const Settings = () => {
                                         setShowLanguageModal(false);
                                     }}
                                     className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${language === lang.code
-                                            ? isDark ? 'bg-dark-bg' : 'bg-neutral-bg'
-                                            : ''
+                                        ? isDark ? 'bg-dark-bg' : 'bg-neutral-bg'
+                                        : ''
                                         }`}
                                 >
                                     <div>
@@ -332,7 +330,7 @@ const Settings = () => {
                             onClick={() => setShowLanguageModal(false)}
                             className="w-full mt-4 py-2 text-primary font-medium"
                         >
-                            Cancel
+                            {t('cancel')}
                         </button>
                     </div>
                 </div>
