@@ -114,6 +114,8 @@ const translations = {
         invalidEmailFormat: 'Invalid email format',
         invalidPhoneFormat: 'Invalid phone format',
         farmNameRequired: 'Farm name is required',
+        editFarm: 'Edit Farm',
+        addNewFarm: 'Add New Farm',
     },
     kn: {
         // Common
@@ -224,6 +226,8 @@ const translations = {
         invalidEmailFormat: 'ಅಮಾನ್ಯ ಇಮೇಲ್ ಫಾರ್ಮ್ಯಾಟ್',
         invalidPhoneFormat: 'ಅಮಾನ್ಯ ಫೋನ್ ಫಾರ್ಮ್ಯಾಟ್',
         farmNameRequired: 'ಜಮೀನಿನ ಹೆಸರು ಅಗತ್ಯವಾಗಿದೆ',
+        editFarm: 'ಜಮೀನು ಸಂಪಾದಿಸಿ',
+        addNewFarm: 'ಹೊಸ ಜಮೀನು ಸೇರಿಸಿ',
     },
     hi: {
         // Common
@@ -334,6 +338,8 @@ const translations = {
         invalidEmailFormat: 'अमान्य ईमेल प्रारूप',
         invalidPhoneFormat: 'अमान्य फोन प्रारूप',
         farmNameRequired: 'खेत का नाम आवश्यक है',
+        editFarm: 'खेत संपादित करें',
+        addNewFarm: 'नया खेत जोड़ें',
     },
 }
 

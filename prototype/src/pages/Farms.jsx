@@ -4,11 +4,13 @@ import { ArrowLeft, MapPin, Sprout, Plus, Edit, Trash2, X, Save } from 'lucide-r
 import Header from '../components/Header'
 import BottomNav from '../components/BottomNav'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import { getItem, setItem, STORAGE_KEYS } from '../utils/localStorage'
 
 const Farms = () => {
     const navigate = useNavigate()
     const { isDark } = useTheme()
+    const { t } = useLanguage()
     const [farms, setFarms] = useState([])
     const [loading, setLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
@@ -66,10 +68,10 @@ const Farms = () => {
 
     const validateForm = () => {
         const newErrors = {}
-        if (!formData.name.trim()) newErrors.name = 'Farm name is required'
-        if (!formData.location.trim()) newErrors.location = 'Location is required'
-        if (!formData.size || isNaN(formData.size)) newErrors.size = 'Valid farm size is required'
-        if (!formData.crops.trim()) newErrors.crops = 'At least one crop is required'
+        if (!formData.name.trim()) newErrors.name = t('nameRequired')
+        if (!formData.location.trim()) newErrors.location = t('locationRequired')
+        if (!formData.size || isNaN(formData.size)) newErrors.size = t('validFarmSizeRequired')
+        if (!formData.crops.trim()) newErrors.crops = t('atLeastOneCropRequired')
         return newErrors
     }
 
@@ -102,7 +104,7 @@ const Farms = () => {
     }
 
     const handleDeleteFarm = (farmId) => {
-        if (confirm('Are you sure you want to delete this farm?')) {
+        if (confirm(t('deleteConfirmation'))) {
             const updatedFarms = farms.filter(farm => farm.id !== farmId)
             setFarms(updatedFarms)
             setItem(STORAGE_KEYS.USER_FARMS, updatedFarms)
@@ -178,7 +180,7 @@ const Farms = () => {
                             <ArrowLeft size={24} className={isDark ? 'text-dark-text' : 'text-neutral-text'} />
                         </button>
                         <h1 className={`text-xl font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
-                            My Farms
+                            {t('myFarms')}
                         </h1>
                     </div>
                     <button
@@ -186,7 +188,7 @@ const Farms = () => {
                         className="btn-primary flex items-center px-4 py-2"
                     >
                         <Plus size={20} className="mr-1" />
-                        Add Farm
+                        {t('addFarm')}
                     </button>
                 </div>
             </div>
@@ -195,7 +197,7 @@ const Farms = () => {
                 {/* Summary Card */}
                 <div className={`${isDark ? 'bg-dark-surface' : 'bg-white'} rounded-lg p-4 mb-6 shadow-sm`}>
                     <h2 className={`text-lg font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'} mb-4`}>
-                        Farm Summary
+                        {t('farmSummary')}
                     </h2>
                     <div className="grid grid-cols-3 gap-4">
                         <div className="text-center">
@@ -203,7 +205,7 @@ const Farms = () => {
                                 {farms.length}
                             </p>
                             <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
-                                Total Farms
+                                {t('totalFarms')}
                             </p>
                         </div>
                         <div className="text-center">
@@ -211,7 +213,7 @@ const Farms = () => {
                                 {farms.reduce((sum, farm) => sum + farm.size, 0).toFixed(1)}
                             </p>
                             <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
-                                Total Acres
+                                {t('totalAcres')}
                             </p>
                         </div>
                         <div className="text-center">
@@ -219,7 +221,7 @@ const Farms = () => {
                                 {farms.filter(f => f.status === 'Active').length}
                             </p>
                             <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
-                                Active
+                                {t('active')}
                             </p>
                         </div>
                     </div>
@@ -230,14 +232,14 @@ const Farms = () => {
                     <div className={`${isDark ? 'bg-dark-surface' : 'bg-white'} rounded-lg p-8 text-center`}>
                         <Sprout size={64} className={`mx-auto mb-4 ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`} />
                         <h3 className={`text-lg font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'} mb-2`}>
-                            No Farms Yet
+                            {t('noFarmsYet')}
                         </h3>
                         <p className={`${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'} mb-4`}>
-                            Add your first farm to get started
+                            {t('addYourFirstFarm')}
                         </p>
                         <button onClick={handleAddFarm} className="btn-primary">
                             <Plus size={20} className="mr-2" />
-                            Add Your First Farm
+                            {t('addFarm')}
                         </button>
                     </div>
                 ) : (
@@ -265,7 +267,7 @@ const Farms = () => {
                                 <div className="grid grid-cols-2 gap-4 mb-4">
                                     <div>
                                         <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
-                                            Farm Size
+                                            {t('farmSize')}
                                         </p>
                                         <p className={`text-lg font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
                                             {farm.size} {farm.unit}
@@ -273,7 +275,7 @@ const Farms = () => {
                                     </div>
                                     <div>
                                         <p className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'}`}>
-                                            Crops
+                                            {t('crops')}
                                         </p>
                                         <p className={`text-lg font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
                                             {farm.crops.length}
@@ -308,8 +310,8 @@ const Farms = () => {
                                     <button
                                         onClick={() => handleDeleteFarm(farm.id)}
                                         className={`flex-1 flex items-center justify-center px-4 py-2 rounded-lg ${isDark
-                                                ? 'bg-red-900/20 text-red-400 hover:bg-red-900/30'
-                                                : 'bg-red-50 text-red-600 hover:bg-red-100'
+                                            ? 'bg-red-900/20 text-red-400 hover:bg-red-900/30'
+                                            : 'bg-red-50 text-red-600 hover:bg-red-100'
                                             }`}
                                     >
                                         <Trash2 size={16} className="mr-2" />
@@ -328,7 +330,7 @@ const Farms = () => {
                     <div className={`w-full ${isDark ? 'bg-dark-surface' : 'bg-white'} rounded-t-2xl p-6 max-h-[90vh] overflow-y-auto`}>
                         <div className="flex items-center justify-between mb-6">
                             <h2 className={`text-xl font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
-                                {editingId ? 'Edit Farm' : 'Add New Farm'}
+                                {editingId ? t('editFarm') : t('addNewFarm')}
                             </h2>
                             <button onClick={() => setShowModal(false)}>
                                 <X size={24} className={isDark ? 'text-dark-text' : 'text-neutral-text'} />
