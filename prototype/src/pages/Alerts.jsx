@@ -79,6 +79,14 @@ const Alerts = () => {
     }
   }, [alerts]);
 
+  // Mark all as read when visiting alerts page
+  useEffect(() => {
+    const unreadAlerts = alerts.filter(a => !a.read);
+    if (unreadAlerts.length > 0) {
+      handleMarkAllAsRead();
+    }
+  }, []);
+
   const getAlertIcon = (type) => {
     switch (type) {
       case 'weather': return Cloud;

@@ -1,12 +1,22 @@
 import { MapPin, Bell, Wifi, WifiOff, ArrowLeft } from 'lucide-react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
+import { getItem, STORAGE_KEYS } from '../utils/localStorage'
 
 const Header = ({ location = 'Bangalore, Karnataka', notificationCount = 3, showBack = false, title = null }) => {
   const [isOnline, setIsOnline] = useState(true)
+  const [unreadCount, setUnreadCount] = useState(0)
   const navigate = useNavigate()
+  const currentLocation = useLocation()
   const { isDark } = useTheme()
+
+  // Update unread count from alerts
+  useEffect(() => {
+    const alerts = getItem(STORAGE_KEYS.USER_ALERTS, [])
+    const unread = alerts.filter(a => !a.read).length
+    setUnreadCount(unread)
+  }, [currentLocation])
 
   return (
     <header className={`border-b sticky top-0 z-40 transition-theme duration-300 ${isDark
@@ -54,11 +64,11 @@ const Header = ({ location = 'Bangalore, Karnataka', notificationCount = 3, show
           </div>
 
           {/* Notifications */}
-          <button className="relative">
+          <button onClick={() => navigate('/alerts')} className="relative">
             <Bell size={24} className={isDark ? 'text-dark-text' : 'text-neutral-text'} />
-            {notificationCount > 0 && (
+            {unreadCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-secondary-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {notificationCount}
+                {unreadCount}
               </span>
             )}
           </button>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
-import { Heart, MessageCircle, Send, Image as ImageIcon, X } from 'lucide-react';
+import { Heart, MessageCircle, Send, Image as ImageIcon, X, Edit2, Trash2 } from 'lucide-react';
 import { getItem, setItem, STORAGE_KEYS } from '../utils/localStorage';
 
 const Community = () => {
@@ -13,6 +13,8 @@ const Community = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [activeCommentPost, setActiveCommentPost] = useState(null);
   const [commentText, setCommentText] = useState('');
+  const [editingPostId, setEditingPostId] = useState(null);
+  const [editingContent, setEditingContent] = useState('');
 
   // Load posts from LocalStorage on mount
   useEffect(() => {
@@ -120,6 +122,34 @@ const Community = () => {
     return date.toLocaleDateString();
   };
 
+  const handleEditPost = (post) => {
+    setEditingPostId(post.id);
+    setEditingContent(post.content);
+  };
+
+  const handleSaveEdit = (postId) => {
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return { ...post, content: editingContent };
+      }
+      return post;
+    }));
+    setEditingPostId(null);
+    setEditingContent('');
+  };
+
+  const handleDeletePost = (postId) => {
+    if (confirm('Are you sure you want to delete this post?')) {
+      setPosts(posts.filter(post => post.id !== postId));
+    }
+  };
+
+  const isPostOwner = (post) => {
+    const userProfile = getItem(STORAGE_KEYS.USER_PROFILE, {});
+    const userId = userProfile.phone || 'user123';
+    return post.authorId === userId;
+  };
+
   return (
     <div className={`min-h-screen pb-20 transition-theme duration-300 ${isDark ? 'bg-dark-bg' : 'bg-neutral-bg'
       }`}>
@@ -134,8 +164,8 @@ const Community = () => {
             onChange={(e) => setNewPostContent(e.target.value)}
             placeholder="Share your farming experience..."
             className={`w-full p-3 rounded-lg border resize-none focus:outline-none focus:ring-2 focus:ring-primary ${isDark
-                ? 'bg-dark-bg border-dark-border text-dark-text placeholder-dark-text-secondary'
-                : 'bg-white border-neutral-border text-neutral-text placeholder-neutral-text-secondary'
+              ? 'bg-dark-bg border-dark-border text-dark-text placeholder-dark-text-secondary'
+              : 'bg-white border-neutral-border text-neutral-text placeholder-neutral-text-secondary'
               }`}
             rows="3"
           />
@@ -173,8 +203,8 @@ const Community = () => {
               onClick={handleCreatePost}
               disabled={!newPostContent.trim() && !newPostImage}
               className={`px-6 py-2 rounded-lg font-medium transition-colors ${newPostContent.trim() || newPostImage
-                  ? 'bg-primary text-white hover:bg-green-700'
-                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                ? 'bg-primary text-white hover:bg-green-700'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
             >
               Post
@@ -196,27 +226,76 @@ const Community = () => {
               <div key={post.id} className={`rounded-lg p-4 ${isDark ? 'bg-dark-surface' : 'bg-white'
                 }`}>
                 {/* Post Header */}
-                <div className="flex items-center mb-3">
-                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                    {post.authorName.charAt(0)}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                      {post.authorName.charAt(0)}
+                    </div>
+                    <div className="ml-3">
+                      <p className={`font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'
+                        }`}>
+                        {post.authorName}
+                      </p>
+                      <p className={`text-xs ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
+                        }`}>
+                        {formatTime(post.createdAt)}
+                      </p>
+                    </div>
                   </div>
-                  <div className="ml-3">
-                    <p className={`font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'
-                      }`}>
-                      {post.authorName}
-                    </p>
-                    <p className={`text-xs ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
-                      }`}>
-                      {formatTime(post.createdAt)}
-                    </p>
-                  </div>
+                  {isPostOwner(post) && (
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => handleEditPost(post)}
+                        className={`p-2 rounded-lg ${isDark ? 'hover:bg-dark-bg' : 'hover:bg-neutral-bg'}`}
+                      >
+                        <Edit2 size={18} className={isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'} />
+                      </button>
+                      <button
+                        onClick={() => handleDeletePost(post.id)}
+                        className={`p-2 rounded-lg ${isDark ? 'hover:bg-dark-bg' : 'hover:bg-neutral-bg'}`}
+                      >
+                        <Trash2 size={18} className="text-red-500" />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Post Content */}
-                <p className={`mb-3 ${isDark ? 'text-dark-text' : 'text-neutral-text'
-                  }`}>
-                  {post.content}
-                </p>
+                {editingPostId === post.id ? (
+                  <div className="mb-3 space-y-2">
+                    <textarea
+                      value={editingContent}
+                      onChange={(e) => setEditingContent(e.target.value)}
+                      className={`w-full p-3 rounded-lg border resize-none focus:outline-none focus:ring-2 focus:ring-primary ${isDark
+                        ? 'bg-dark-bg border-dark-border text-dark-text'
+                        : 'bg-white border-neutral-border text-neutral-text'
+                        }`}
+                      rows="3"
+                    />
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleSaveEdit(post.id)}
+                        className="flex-1 px-4 py-2 bg-primary text-white rounded-lg font-medium"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingPostId(null)}
+                        className={`flex-1 px-4 py-2 rounded-lg font-medium ${isDark
+                          ? 'bg-dark-bg text-dark-text'
+                          : 'bg-neutral-bg text-neutral-text'
+                          }`}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className={`mb-3 ${isDark ? 'text-dark-text' : 'text-neutral-text'
+                    }`}>
+                    {post.content}
+                  </p>
+                )}
 
                 {/* Post Image */}
                 {post.image && (
@@ -232,8 +311,8 @@ const Community = () => {
                     <Heart
                       size={20}
                       className={`${post.likes?.includes(getItem(STORAGE_KEYS.USER_PROFILE, {}).phone || 'user123')
-                          ? 'fill-red-500 text-red-500'
-                          : isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
+                        ? 'fill-red-500 text-red-500'
+                        : isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
                         }`}
                     />
                     <span className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
@@ -295,8 +374,8 @@ const Community = () => {
                       onChange={(e) => setCommentText(e.target.value)}
                       placeholder="Write a comment..."
                       className={`flex-1 p-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary ${isDark
-                          ? 'bg-dark-bg border-dark-border text-dark-text placeholder-dark-text-secondary'
-                          : 'bg-white border-neutral-border text-neutral-text placeholder-neutral-text-secondary'
+                        ? 'bg-dark-bg border-dark-border text-dark-text placeholder-dark-text-secondary'
+                        : 'bg-white border-neutral-border text-neutral-text placeholder-neutral-text-secondary'
                         }`}
                       onKeyPress={(e) => e.key === 'Enter' && handleAddComment(post.id)}
                     />
@@ -304,8 +383,8 @@ const Community = () => {
                       onClick={() => handleAddComment(post.id)}
                       disabled={!commentText.trim()}
                       className={`p-2 rounded-lg ${commentText.trim()
-                          ? 'bg-primary text-white'
-                          : 'bg-gray-300 text-gray-500'
+                        ? 'bg-primary text-white'
+                        : 'bg-gray-300 text-gray-500'
                         }`}
                     >
                       <Send size={20} />
