@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 import {
@@ -13,6 +14,7 @@ import { getItem, setItem, STORAGE_KEYS } from '../utils/localStorage';
 const Profile = () => {
   const navigate = useNavigate();
   const { isDark } = useTheme();
+  const { t } = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -37,21 +39,21 @@ const Profile = () => {
 
   const stats = [
     {
-      label: 'Crops Monitored',
+      labelKey: 'cropsMonitored',
       value: profile.crops.length.toString(),
       icon: Leaf,
       color: 'text-green-600',
       bgColor: 'bg-green-50',
     },
     {
-      label: 'Detections',
+      labelKey: 'detections',
       value: '24',
       icon: Activity,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
     },
     {
-      label: 'Success Rate',
+      labelKey: 'successRate',
       value: '92%',
       icon: TrendingUp,
       color: 'text-orange-600',
@@ -62,19 +64,19 @@ const Profile = () => {
   const menuItems = [
     {
       icon: Settings,
-      label: 'Settings',
+      labelKey: 'settings',
       action: () => navigate('/settings'),
     },
     {
       icon: Award,
-      label: 'Achievements',
+      labelKey: 'achievements',
       action: () => navigate('/achievements'),
     },
     {
       icon: LogOut,
-      label: 'Logout',
+      labelKey: 'logout',
       action: () => {
-        if (window.confirm('Are you sure you want to logout?')) {
+        if (window.confirm(t('confirmLogout'))) {
           localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
           localStorage.removeItem(STORAGE_KEYS.AUTH_PHONE);
           navigate('/login');
@@ -110,19 +112,19 @@ const Profile = () => {
     const newErrors = {};
 
     if (!editedProfile.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = t('nameRequired');
     }
 
     if (!validateEmail(editedProfile.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = t('invalidEmailFormat');
     }
 
     if (!validatePhone(editedProfile.phone)) {
-      newErrors.phone = 'Invalid phone format';
+      newErrors.phone = t('invalidPhoneFormat');
     }
 
     if (!editedProfile.farmName.trim()) {
-      newErrors.farmName = 'Farm name is required';
+      newErrors.farmName = t('farmNameRequired');
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -156,7 +158,7 @@ const Profile = () => {
       {/* Success Message */}
       {showSuccess && (
         <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-status-success text-white px-6 py-3 rounded-lg shadow-lg">
-          Profile updated successfully!
+          {t('profileUpdatedSuccessfully')}
         </div>
       )}
 
@@ -207,7 +209,7 @@ const Profile = () => {
                 )}
                 <p className={`text-sm mt-1 ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
                   }`}>
-                  Farmer since {profile.joinedDate}
+                  {t('farmerSince')} {profile.joinedDate}
                 </p>
                 {errors.name && <p className="text-status-error text-xs mt-1">{errors.name}</p>}
               </div>
@@ -307,12 +309,12 @@ const Profile = () => {
           }`}>
           <h2 className={`text-lg font-semibold mb-4 ${isDark ? 'text-dark-text' : 'text-neutral-text'
             }`}>
-            Farm Details
+            {t('farmDetails')}
           </h2>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
-                }`}>Farm Name</span>
+                }`}>{t('farmName')}</span>
               {isEditing ? (
                 <div className="flex-1 ml-4">
                   <input
@@ -333,7 +335,7 @@ const Profile = () => {
             </div>
             <div className="flex justify-between items-center">
               <span className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
-                }`}>Farm Size</span>
+                }`}>{t('farmSize')}</span>
               {isEditing ? (
                 <input
                   type="text"
@@ -351,7 +353,7 @@ const Profile = () => {
             </div>
             <div className="flex justify-between items-start">
               <span className={`text-sm ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
-                }`}>Crops</span>
+                }`}>{t('crops')}</span>
               <div className="flex flex-wrap gap-2 justify-end">
                 {profile.crops.map((crop, index) => (
                   <span
@@ -370,7 +372,7 @@ const Profile = () => {
         <div className="mb-6">
           <h2 className={`text-lg font-semibold mb-4 ${isDark ? 'text-dark-text' : 'text-neutral-text'
             }`}>
-            Your Stats
+            {t('yourStats')}
           </h2>
           <div className="grid grid-cols-3 gap-4">
             {stats.map((stat, index) => {
@@ -387,7 +389,7 @@ const Profile = () => {
                   </p>
                   <p className={`text-xs ${isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'
                     }`}>
-                    {stat.label}
+                    {t(stat.labelKey)}
                   </p>
                 </div>
               );
@@ -405,15 +407,15 @@ const Profile = () => {
                 key={index}
                 onClick={item.action}
                 className={`w-full flex items-center justify-between py-4 px-4 ${index !== menuItems.length - 1
-                    ? isDark ? 'border-b border-dark-divider' : 'border-b border-neutral-divider'
-                    : ''
+                  ? isDark ? 'border-b border-dark-divider' : 'border-b border-neutral-divider'
+                  : ''
                   } transition-colors rounded ${isDark ? 'hover:bg-dark-bg' : 'hover:bg-neutral-bg'
                   } ${item.danger ? 'text-status-error' : isDark ? 'text-dark-text' : 'text-neutral-text'
                   }`}
               >
                 <div className="flex items-center">
                   <Icon size={20} className="mr-3" />
-                  <span className="font-medium">{item.label}</span>
+                  <span className="font-medium">{t(item.labelKey)}</span>
                 </div>
                 <ChevronRight size={20} className={
                   isDark ? 'text-dark-text-secondary' : 'text-neutral-text-secondary'

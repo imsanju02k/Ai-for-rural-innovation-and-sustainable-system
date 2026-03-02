@@ -106,6 +106,14 @@ const translations = {
         sensorMonitor: 'Sensor Monitor',
         recentActivity: 'Recent Activity',
         view: 'View',
+
+        // Profile Page
+        farmerSince: 'Farmer since',
+        profileUpdatedSuccessfully: 'Profile updated successfully!',
+        nameRequired: 'Name is required',
+        invalidEmailFormat: 'Invalid email format',
+        invalidPhoneFormat: 'Invalid phone format',
+        farmNameRequired: 'Farm name is required',
     },
     kn: {
         // Common
@@ -208,6 +216,14 @@ const translations = {
         sensorMonitor: 'ಸಂವೇದಕ ಮಾನಿಟರ್',
         recentActivity: 'ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ',
         view: 'ವೀಕ್ಷಣೆ',
+
+        // Profile Page
+        farmerSince: 'ರೈತ ಆದಿದ್ದು',
+        profileUpdatedSuccessfully: 'ಪ್ರೊಫೈಲ್ ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ!',
+        nameRequired: 'ಹೆಸರು ಅಗತ್ಯವಾಗಿದೆ',
+        invalidEmailFormat: 'ಅಮಾನ್ಯ ಇಮೇಲ್ ಫಾರ್ಮ್ಯಾಟ್',
+        invalidPhoneFormat: 'ಅಮಾನ್ಯ ಫೋನ್ ಫಾರ್ಮ್ಯಾಟ್',
+        farmNameRequired: 'ಜಮೀನಿನ ಹೆಸರು ಅಗತ್ಯವಾಗಿದೆ',
     },
     hi: {
         // Common
@@ -310,6 +326,14 @@ const translations = {
         sensorMonitor: 'सेंसर मॉनिटर',
         recentActivity: 'हाल की गतिविधि',
         view: 'देखें',
+
+        // Profile Page
+        farmerSince: 'किसान बने हुए',
+        profileUpdatedSuccessfully: 'प्रोफाइल सफलतापूर्वक अपडेट किया गया!',
+        nameRequired: 'नाम आवश्यक है',
+        invalidEmailFormat: 'अमान्य ईमेल प्रारूप',
+        invalidPhoneFormat: 'अमान्य फोन प्रारूप',
+        farmNameRequired: 'खेत का नाम आवश्यक है',
     },
 }
 
