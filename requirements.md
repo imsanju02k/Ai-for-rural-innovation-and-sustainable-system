@@ -19,7 +19,7 @@ The system leverages AWS AI services to provide intelligent crop disease detecti
 - **Mobile_App**: The React Native application used by Farmers
 - **Backend_Service**: The serverless AWS Lambda functions that process requests
 - **Disease_Image**: A photograph of a crop taken by a Farmer for disease analysis
-- **Regional_Language**: Hindi, Tamil, Telugu, Bengali, or Marathi language support
+- **Regional_Language**: Hindi, Tamil, Telugu, Bengali, kannada or Marathi language support
 - **Offline_Mode**: Operation mode when the Mobile_App has no internet connectivity
 - **Alert**: A push notification sent to Farmers about critical events
 - **Dashboard**: Visual interface displaying insights and analytics
