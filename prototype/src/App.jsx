@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useState } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { LanguageProvider } from './contexts/LanguageContext'
 
 // Pages
 import Splash from './pages/Splash'
@@ -27,7 +28,8 @@ function App() {
 
   return (
     <ThemeProvider>
-      <Router>
+      <LanguageProvider>
+        <Router>
         <Routes>
           <Route path="/" element={<Splash />} />
           <Route
@@ -92,6 +94,7 @@ function App() {
           />
         </Routes>
       </Router>
+      </LanguageProvider>
     </ThemeProvider>
   )
 }

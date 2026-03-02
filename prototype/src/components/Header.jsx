@@ -2,6 +2,7 @@ import { MapPin, Bell, Wifi, WifiOff, ArrowLeft } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import { getItem, STORAGE_KEYS } from '../utils/localStorage'
 import appLogo from '../applogo.png'
 
@@ -11,6 +12,7 @@ const Header = ({ location = 'Bangalore, Karnataka', notificationCount = 3, show
   const navigate = useNavigate()
   const currentLocation = useLocation()
   const { isDark } = useTheme()
+  const { t } = useLanguage()
 
   // Update unread count from alerts
   useEffect(() => {
@@ -37,8 +39,8 @@ const Header = ({ location = 'Bangalore, Karnataka', notificationCount = 3, show
           </button>
         ) : (
           <div className="flex items-center">
-            <img src={appLogo} alt="KrishiSankalp AI" className="w-8 h-8 mr-2 rounded-full" />
-            <span className="text-primary font-bold text-lg">KrishiSankalp AI</span>
+            <img src={appLogo} alt={t('krishisankalp')} className="w-8 h-8 mr-2 rounded-full" />
+            <span className="text-primary font-bold text-lg">{t('krishisankalp')}</span>
           </div>
         )}
 
