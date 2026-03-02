@@ -1,0 +1,217 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="KrishiSankalp Prototype Architecture" id="architecture">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title" value="KrishiSankalp AI - Prototype Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="320" y="20" width="530" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Frontend Layer -->
+        <mxCell id="frontend-layer" value="Frontend Layer (React + Vite)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="1080" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- Pages -->
+        <mxCell id="pages-group" value="Pages" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656" vertex="1" parent="frontend-layer">
+          <mxGeometry x="20" y="40" width="1040" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-splash" value="Splash" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="pages-group">
+          <mxGeometry x="10" y="30" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-onboarding" value="Onboarding" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="pages-group">
+          <mxGeometry x="100" y="30" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-login" value="Login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="pages-group">
+          <mxGeometry x="190" y="30" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-register" value="Register" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="pages-group">
+          <mxGeometry x="280" y="30" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-dashboard" value="Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="pages-group">
+          <mxGeometry x="370" y="30" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-farms" value="Farms" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="pages-group">
+          <mxGeometry x="460" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-sensors" value="Sensors" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="pages-group">
+          <mxGeometry x="540" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-disease" value="Disease\nDetection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="pages-group">
+          <mxGeometry x="620" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-market" value="Market\nPrices" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="pages-group">
+          <mxGeometry x="700" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-resource" value="Resource\nOptimizer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="pages-group">
+          <mxGeometry x="780" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-advisory" value="Advisory\nChat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="pages-group">
+          <mxGeometry x="860" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="page-profile" value="Profile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="pages-group">
+          <mxGeometry x="940" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Components -->
+        <mxCell id="components-group" value="Components" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656" vertex="1" parent="frontend-layer">
+          <mxGeometry x="20" y="160" width="340" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="comp-header" value="Header" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="components-group">
+          <mxGeometry x="10" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="comp-bottomnav" value="BottomNav" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="components-group">
+          <mxGeometry x="90" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="comp-actioncard" value="ActionCard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="components-group">
+          <mxGeometry x="170" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="comp-statcard" value="StatCard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="components-group">
+          <mxGeometry x="250" y="30" width="70" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Contexts -->
+        <mxCell id="contexts-group" value="Contexts" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656" vertex="1" parent="frontend-layer">
+          <mxGeometry x="380" y="160" width="200" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="context-theme" value="ThemeContext\n(Dark/Light Mode)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" vertex="1" parent="contexts-group">
+          <mxGeometry x="10" y="30" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Routing -->
+        <mxCell id="routing-group" value="Routing" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656" vertex="1" parent="frontend-layer">
+          <mxGeometry x="600" y="160" width="200" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="routing-router" value="React Router\n(BrowserRouter)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" vertex="1" parent="routing-group">
+          <mxGeometry x="10" y="30" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- State Management -->
+        <mxCell id="state-group" value="State Management" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656" vertex="1" parent="frontend-layer">
+          <mxGeometry x="820" y="160" width="240" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="state-local" value="Local State (useState)\nSession Storage\nLocalStorage" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" vertex="1" parent="state-group">
+          <mxGeometry x="10" y="30" width="220" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Backend/API Layer -->
+        <mxCell id="backend-layer" value="Backend/API Layer (Mock Data)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="380" width="1080" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- API Services -->
+        <mxCell id="api-disease" value="Disease Detection API\n(Simulated ML Model)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e" vertex="1" parent="backend-layer">
+          <mxGeometry x="20" y="40" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="api-market" value="Market Prices API\n(Mock Data)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e" vertex="1" parent="backend-layer">
+          <mxGeometry x="190" y="40" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="api-weather" value="Weather API\n(Mock Data)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e" vertex="1" parent="backend-layer">
+          <mxGeometry x="360" y="40" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="api-iot" value="IoT Sensor API\n(Simulated Real-time)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e" vertex="1" parent="backend-layer">
+          <mxGeometry x="530" y="40" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="api-advisory" value="Advisory Chat API\n(Mock Responses)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e" vertex="1" parent="backend-layer">
+          <mxGeometry x="700" y="40" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="api-farms" value="Farms API\n(Mock Data)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e" vertex="1" parent="backend-layer">
+          <mxGeometry x="870" y="40" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Data Storage -->
+        <mxCell id="storage-note" value="Data Storage: LocalStorage + SessionStorage (Client-side only)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeColor=#ae4132" vertex="1" parent="backend-layer">
+          <mxGeometry x="20" y="120" width="1000" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Technology Stack -->
+        <mxCell id="tech-stack" value="Technology Stack" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="580" width="520" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tech-frontend" value="Frontend:\n• React 18.2\n• Vite 5.0\n• React Router DOM 6.20\n• Tailwind CSS 3.3\n• Lucide React (Icons)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top" vertex="1" parent="tech-stack">
+          <mxGeometry x="20" y="40" width="220" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tech-testing" value="Testing:\n• Vitest 4.0\n• @testing-library/react 16.3\n• fast-check 4.5\n• @fast-check/vitest 0.2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top" vertex="1" parent="tech-stack">
+          <mxGeometry x="260" y="40" width="240" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- Features -->
+        <mxCell id="features" value="Key Features" style="swimlane;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="580" width="520" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="features-list" value="✓ Disease Detection (5 crop types)\n✓ Real-time IoT Sensor Monitoring\n✓ Market Price Tracking\n✓ Resource Optimization\n✓ AI Advisory Chat\n✓ Farm Management\n✓ Yield Prediction\n✓ Community Forum\n✓ Multi-language Support\n✓ Dark/Light Theme\n✓ Responsive Design" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top" vertex="1" parent="features">
+          <mxGeometry x="20" y="40" width="480" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="conn1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#666666" edge="1" parent="1" source="page-dashboard" target="api-disease">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="conn2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#666666" edge="1" parent="1" source="page-sensors" target="api-iot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="conn3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#666666" edge="1" parent="1" source="page-farms" target="api-farms">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend" value="Legend" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1180" y="80" width="200" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend-auth" value="Authentication Pages" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="legend">
+          <mxGeometry x="10" y="30" width="180" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend-main" value="Main App Pages" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="legend">
+          <mxGeometry x="10" y="65" width="180" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend-comp" value="Reusable Components" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="legend">
+          <mxGeometry x="10" y="100" width="180" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend-api" value="API Services (Mock)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e" vertex="1" parent="legend">
+          <mxGeometry x="10" y="135" width="180" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend-context" value="Context/State" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" vertex="1" parent="legend">
+          <mxGeometry x="10" y="170" width="180" height="25" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
