@@ -52,7 +52,7 @@ const Profile = () => {
     {
       icon: Settings,
       label: 'Settings',
-      action: () => console.log('Settings'),
+      action: () => navigate('/settings'),
     },
     {
       icon: Award,
