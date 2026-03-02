@@ -9,15 +9,16 @@ const Header = ({ location = 'Bangalore, Karnataka', notificationCount = 3 }) =>
       <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
-          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-sm">AI</span>
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center mr-2">
+            <span className="text-white font-bold text-sm">KS</span>
           </div>
+          <span className="text-primary font-bold text-lg">KrishiSankalp AI</span>
         </div>
 
         {/* Location */}
         <div className="flex items-center text-sm text-neutral-text-secondary">
           <MapPin size={16} className="mr-1" />
-          <span>{location}</span>
+          <span className="hidden sm:inline">{location}</span>
         </div>
 
         {/* Right Icons */}
