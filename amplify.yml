@@ -3,7 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - cd prototype && npm ci
+        - cd prototype && npm install
     build:
       commands:
         - cd prototype && npm run build
