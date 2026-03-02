@@ -18,6 +18,7 @@ import Community from './pages/Community'
 import Profile from './pages/Profile'
 import YieldPrediction from './pages/YieldPrediction'
 import Settings from './pages/Settings'
+import Farms from './pages/Farms'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -79,6 +80,10 @@ function App() {
           <Route
             path="/yield-prediction"
             element={isAuthenticated ? <YieldPrediction /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/farms"
+            element={isAuthenticated ? <Farms /> : <Navigate to="/login" />}
           />
         </Routes>
       </Router>
