@@ -630,7 +630,7 @@ return (
 
         <BottomNav />
     </div>
-)
+    )
 }
 
 export default Farms
