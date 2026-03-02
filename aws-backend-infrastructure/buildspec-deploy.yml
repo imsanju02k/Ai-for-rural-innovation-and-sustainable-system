@@ -1,0 +1,63 @@
+version: 0.2
+
+# Deployment Build Specification
+# This buildspec is used by AWS CodeBuild to deploy CDK stacks
+# to different environments (dev, staging, prod)
+#
+# Requirements: 12.4, 12.8
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo "Installing AWS CDK CLI..."
+      - npm install -g aws-cdk@latest
+      - echo "CDK version:"
+      - cdk --version
+
+  pre_build:
+    commands:
+      - echo "=== Preparing for Deployment ==="
+      - echo "Target Environment: $ENVIRONMENT"
+      - echo "AWS Region: $AWS_REGION"
+      - echo "AWS Account: $AWS_ACCOUNT_ID"
+      - echo "Deployment started at $(date)"
+
+  build:
+    commands:
+      - echo "=== Deploying CDK Stacks to $ENVIRONMENT ==="
+      - |
+        cdk deploy --all \
+          --require-approval never \
+          --context environment=$ENVIRONMENT \
+          --outputs-file outputs-$ENVIRONMENT.json \
+          --verbose
+      
+      - echo "=== Deployment Completed ==="
+      - echo "Checking deployment outputs..."
+      - cat outputs-$ENVIRONMENT.json
+
+  post_build:
+    commands:
+      - echo "=== Post-Deployment Tasks ==="
+      - echo "Deployment completed at $(date)"
+      - echo "Outputs saved to outputs-$ENVIRONMENT.json"
+      - |
+        if [ $CODEBUILD_BUILD_SUCCEEDING -eq 1 ]; then
+          echo "✓ Deployment successful"
+        else
+          echo "✗ Deployment failed"
+          exit 1
+        fi
+
+# Artifacts containing deployment outputs
+artifacts:
+  files:
+    - 'outputs-$ENVIRONMENT.json'
+  name: DeploymentOutputs
+
+# Cache CDK assets
+cache:
+  paths:
+    - 'cdk.out/**/*'

@@ -1,0 +1,9 @@
+{
+  "name": "auth-refresh",
+  "version": "1.0.0",
+  "description": "Token refresh Lambda function",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.0.0"
+  }
+}

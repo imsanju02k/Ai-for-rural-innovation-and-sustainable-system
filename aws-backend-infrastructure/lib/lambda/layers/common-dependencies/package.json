@@ -1,0 +1,14 @@
+{
+  "name": "common-dependencies-layer",
+  "version": "1.0.0",
+  "description": "Common dependencies for Lambda functions",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.490.0",
+    "@aws-sdk/client-s3": "^3.490.0",
+    "@aws-sdk/lib-dynamodb": "^3.490.0",
+    "@aws-sdk/s3-request-presigner": "^3.490.0",
+    "lodash": "^4.17.21",
+    "date-fns": "^3.0.0",
+    "zod": "^3.22.4"
+  }
+}

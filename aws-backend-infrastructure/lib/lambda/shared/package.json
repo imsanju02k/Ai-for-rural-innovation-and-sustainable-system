@@ -1,0 +1,21 @@
+{
+  "name": "shared-lambda-utilities",
+  "version": "1.0.0",
+  "description": "Shared utilities, models, and middleware for Lambda functions",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/lib-dynamodb": "^3.0.0",
+    "@aws-sdk/s3-request-presigner": "^3.0.0",
+    "aws-lambda": "^1.0.7",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.0",
+    "@types/node": "^20.0.0"
+  }
+}

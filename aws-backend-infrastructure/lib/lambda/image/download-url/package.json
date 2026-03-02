@@ -1,0 +1,16 @@
+{
+  "name": "image-download-url",
+  "version": "1.0.0",
+  "description": "Lambda function to generate pre-signed S3 download URLs for images",
+  "main": "index.ts",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/s3-request-presigner": "^3.0.0",
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/lib-dynamodb": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.0",
+    "@types/node": "^20.0.0"
+  }
+}

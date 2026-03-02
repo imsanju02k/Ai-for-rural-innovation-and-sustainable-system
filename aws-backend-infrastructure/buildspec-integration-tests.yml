@@ -1,0 +1,64 @@
+version: 0.2
+
+# Integration Tests Build Specification
+# This buildspec runs integration tests against deployed environments
+#
+# Requirements: 12.3
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo "Installing dependencies for integration tests..."
+      - npm ci
+      - echo "Dependencies installed successfully"
+
+  pre_build:
+    commands:
+      - echo "=== Preparing Integration Tests ==="
+      - echo "Target Environment: $ENVIRONMENT"
+      - echo "Loading environment configuration..."
+      - |
+        if [ -f "outputs-$ENVIRONMENT.json" ]; then
+          echo "Found deployment outputs for $ENVIRONMENT"
+          cat outputs-$ENVIRONMENT.json
+        else
+          echo "WARNING: No deployment outputs found"
+        fi
+
+  build:
+    commands:
+      - echo "=== Running Integration Tests on $ENVIRONMENT ==="
+      - |
+        npm run test:integration -- \
+          --ci \
+          --testTimeout=30000 \
+          --maxWorkers=2
+      
+      - echo "=== Integration Tests Completed ==="
+
+  post_build:
+    commands:
+      - echo "=== Test Results Summary ==="
+      - |
+        if [ $CODEBUILD_BUILD_SUCCEEDING -eq 1 ]; then
+          echo "✓ All integration tests passed"
+        else
+          echo "✗ Integration tests failed"
+          echo "Check test results for details"
+          exit 1
+        fi
+
+# Test reports
+reports:
+  integration-test-reports:
+    files:
+      - 'test-results/integration-junit.xml'
+    file-format: 'JUNITXML'
+
+# Artifacts containing test results
+artifacts:
+  files:
+    - 'test-results/**/*'
+  name: IntegrationTestResults

@@ -1,0 +1,104 @@
+version: 0.2
+
+# Security Scanning Build Specification
+# This buildspec is used by AWS CodeBuild to:
+# - Run npm audit for dependency vulnerabilities
+# - Run SAST scanning (if configured)
+# - Run IaC validation (cfn-lint)
+# - Block deployment on critical findings
+#
+# Requirements: 12.6
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+      python: 3.11
+    commands:
+      - echo "Installing security scanning tools..."
+      - npm install -g npm-audit-resolver
+      - pip install cfn-lint
+      - pip install checkov  # Infrastructure as Code security scanner
+      - echo "Security tools installed successfully"
+
+  pre_build:
+    commands:
+      - echo "=== Preparing for Security Scans ==="
+      - echo "Scan started at $(date)"
+      - mkdir -p security-reports
+
+  build:
+    commands:
+      - echo "=== Running npm audit for dependency vulnerabilities ==="
+      - |
+        npm audit --json > security-reports/npm-audit.json || true
+        npm audit --audit-level=moderate > security-reports/npm-audit.txt || {
+          echo "WARNING: Vulnerabilities found in dependencies"
+          cat security-reports/npm-audit.txt
+        }
+      
+      - echo "=== Running cfn-lint for IaC validation ==="
+      - |
+        cfn-lint cdk.out/*.template.json --format json > security-reports/cfn-lint.json || {
+          echo "WARNING: CloudFormation template issues found"
+          cfn-lint cdk.out/*.template.json
+        }
+      
+      - echo "=== Running Checkov for IaC security scanning ==="
+      - |
+        checkov --directory cdk.out --framework cloudformation --output json > security-reports/checkov.json || {
+          echo "WARNING: Security issues found in IaC templates"
+          checkov --directory cdk.out --framework cloudformation --compact
+        }
+      
+      - echo "=== Analyzing Security Scan Results ==="
+      - |
+        # Check for critical vulnerabilities
+        CRITICAL_COUNT=$(jq '[.vulnerabilities | to_entries[] | select(.value.severity == "critical")] | length' security-reports/npm-audit.json 2>/dev/null || echo "0")
+        echo "Critical vulnerabilities found: $CRITICAL_COUNT"
+        
+        if [ "$CRITICAL_COUNT" -gt "0" ]; then
+          echo "ERROR: Critical vulnerabilities detected. Blocking deployment."
+          exit 1
+        fi
+      
+      - echo "=== Security Scan Summary ==="
+      - echo "All security scans completed"
+      - echo "No critical issues blocking deployment"
+
+  post_build:
+    commands:
+      - echo "=== Generating Security Report ==="
+      - |
+        cat > security-reports/summary.txt << EOF
+        Security Scan Summary
+        =====================
+        Scan Date: $(date)
+        
+        Dependency Vulnerabilities:
+        $(npm audit --audit-level=info 2>&1 | grep -E "found|vulnerabilities" || echo "No vulnerabilities found")
+        
+        IaC Validation:
+        $(cfn-lint cdk.out/*.template.json 2>&1 | tail -5 || echo "No issues found")
+        
+        Security Checks:
+        $(checkov --directory cdk.out --framework cloudformation --compact 2>&1 | tail -10 || echo "No issues found")
+        EOF
+      
+      - cat security-reports/summary.txt
+      - echo "Security scanning completed at $(date)"
+
+# Artifacts containing security reports
+artifacts:
+  files:
+    - 'security-reports/**/*'
+  name: SecurityScanResults
+
+# Reports for CodeBuild
+reports:
+  security-scan-reports:
+    files:
+      - 'security-reports/npm-audit.json'
+      - 'security-reports/cfn-lint.json'
+      - 'security-reports/checkov.json'
+    file-format: 'JUNITXML'

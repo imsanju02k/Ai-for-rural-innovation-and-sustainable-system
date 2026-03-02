@@ -1,0 +1,549 @@
+{
+    "info": {
+        "name": "AI Rural Innovation Platform API",
+        "description": "Complete API collection for the AI Rural Innovation Platform",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{accessToken}}",
+                "type": "string"
+            }
+        ]
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "https://api-dev.farmplatform.example.com",
+            "type": "string"
+        },
+        {
+            "key": "accessToken",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "userId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "farmId",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register User",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 201) {",
+                                    "    const response = pm.response.json();",
+                                    "    pm.collectionVariables.set('userId', response.userId);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"farmer@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"name\": \"John Farmer\",\n  \"phone\": \"+1234567890\",\n  \"role\": \"farmer\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/register",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "register"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    const response = pm.response.json();",
+                                    "    pm.collectionVariables.set('accessToken', response.accessToken);",
+                                    "    pm.collectionVariables.set('userId', response.userId);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"farmer@example.com\",\n  \"password\": \"SecurePass123!\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/login",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Farms",
+            "item": [
+                {
+                    "name": "Create Farm",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 201) {",
+                                    "    const response = pm.response.json();",
+                                    "    pm.collectionVariables.set('farmId', response.farmId);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Green Valley Farm\",\n  \"location\": {\n    \"latitude\": 28.6139,\n    \"longitude\": 77.2090,\n    \"address\": \"Village Rampur, District Meerut, UP\"\n  },\n  \"cropTypes\": [\"wheat\", \"rice\", \"sugarcane\"],\n  \"acreage\": 15.5,\n  \"soilType\": \"loamy\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/farms",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "farms"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "List Farms",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/farms",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "farms"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Farm",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/farms/{{farmId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "farms",
+                                "{{farmId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Disease Detection",
+            "item": [
+                {
+                    "name": "Get Upload URL",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"farmId\": \"{{farmId}}\",\n  \"fileName\": \"crop_disease_photo.jpg\",\n  \"contentType\": \"image/jpeg\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/images/upload-url",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "images",
+                                "upload-url"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Analyze Image",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"imageId\": \"<image-id-from-upload>\",\n  \"farmId\": \"{{farmId}}\",\n  \"cropType\": \"wheat\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/disease-detection/analyze",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "disease-detection",
+                                "analyze"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Analysis History",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/disease-detection/history?farmId={{farmId}}&limit=20",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "disease-detection",
+                                "history"
+                            ],
+                            "query": [
+                                {
+                                    "key": "farmId",
+                                    "value": "{{farmId}}"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "20"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Market Prices",
+            "item": [
+                {
+                    "name": "Get Market Prices",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/market-prices?commodity=wheat",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "market-prices"
+                            ],
+                            "query": [
+                                {
+                                    "key": "commodity",
+                                    "value": "wheat"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Commodity Price",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/market-prices/wheat",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "market-prices",
+                                "wheat"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Resource Optimization",
+            "item": [
+                {
+                    "name": "Calculate Optimization",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"farmId\": \"{{farmId}}\",\n  \"optimizationType\": \"water\",\n  \"parameters\": {\n    \"cropType\": \"wheat\",\n    \"currentStage\": \"vegetative\",\n    \"soilMoisture\": 45,\n    \"weatherForecast\": \"sunny\"\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/optimization/calculate",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "optimization",
+                                "calculate"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Optimization History",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/optimization/history?farmId={{farmId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "optimization",
+                                "history"
+                            ],
+                            "query": [
+                                {
+                                    "key": "farmId",
+                                    "value": "{{farmId}}"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Advisory Chat",
+            "item": [
+                {
+                    "name": "Send Chat Message",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"message\": \"What is the best time to plant wheat in North India?\",\n  \"farmId\": \"{{farmId}}\",\n  \"includeContext\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/advisory/chat",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "advisory",
+                                "chat"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Chat History",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/advisory/history?limit=50",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "advisory",
+                                "history"
+                            ],
+                            "query": [
+                                {
+                                    "key": "limit",
+                                    "value": "50"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Sensors",
+            "item": [
+                {
+                    "name": "Get Sensor Data",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/sensors/data?farmId={{farmId}}&sensorType=soil_moisture&aggregation=hourly",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "sensors",
+                                "data"
+                            ],
+                            "query": [
+                                {
+                                    "key": "farmId",
+                                    "value": "{{farmId}}"
+                                },
+                                {
+                                    "key": "sensorType",
+                                    "value": "soil_moisture"
+                                },
+                                {
+                                    "key": "aggregation",
+                                    "value": "hourly"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Device Data",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/sensors/data/sensor-001",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "sensors",
+                                "data",
+                                "sensor-001"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Alerts",
+            "item": [
+                {
+                    "name": "Get Alerts",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/alerts?farmId={{farmId}}&severity=high&status=active",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "alerts"
+                            ],
+                            "query": [
+                                {
+                                    "key": "farmId",
+                                    "value": "{{farmId}}"
+                                },
+                                {
+                                    "key": "severity",
+                                    "value": "high"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "active"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Acknowledge Alert",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"note\": \"Irrigation scheduled for tomorrow morning\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/alerts/<alert-id>/acknowledge",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "alerts",
+                                "<alert-id>",
+                                "acknowledge"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

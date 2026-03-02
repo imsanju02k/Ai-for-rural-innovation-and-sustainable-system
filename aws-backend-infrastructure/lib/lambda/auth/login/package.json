@@ -1,0 +1,11 @@
+{
+  "name": "auth-login",
+  "version": "1.0.0",
+  "description": "User login Lambda function",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.0.0",
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/lib-dynamodb": "^3.0.0"
+  }
+}

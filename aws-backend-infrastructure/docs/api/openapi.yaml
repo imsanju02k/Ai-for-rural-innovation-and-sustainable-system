@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: AI Rural Innovation Platform API
+  description: |
+    RESTful API for the AI Rural Innovation Platform backend infrastructure.
+    
+    This API provides endpoints for:
+    - User authentication and authorization
+    - Farm management
+    - Disease detection using AI
+    - Market price predictions
+    - Resource optimization recommendations
+    - Advisory chatbot
+    - IoT sensor data management
+    - Alert notifications
+    
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@farmplatform.example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.farmplatform.example.com
+    description: Production server
+  - url: https://api-staging.farmplatform.example.com
+    description: Staging server
+  - url: https://api-dev.farmplatform.example.com
+    description: Development server
+
+tags:
+  - name: Authentication
+    description: User authentication and authorization
+  - name: Farms
+    description: Farm management operations
+  - name: Disease Detection
+    description: Crop disease detection using AI
+  - name: Market Prices
+    description: Market price data and predictions
+  - name: Optimization
+    description: Resource optimization recommendations
+  - name: Advisory
+    description: AI-powered advisory chatbot
+  - name: Sensors
+    description: IoT sensor data management
+  - name: Alerts
+    description: Alert notifications and management
+
+security:
+  - BearerAuth: []
+
+paths:
+  # Authentication Endpoints
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: Create a new user account with email and password
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login user
+      description: Authenticate user and return JWT tokens
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'

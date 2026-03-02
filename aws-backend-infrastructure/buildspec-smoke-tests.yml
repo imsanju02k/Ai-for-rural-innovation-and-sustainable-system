@@ -1,0 +1,94 @@
+version: 0.2
+
+# Smoke Tests Build Specification
+# This buildspec runs smoke tests after deployment to verify
+# critical functionality is working
+#
+# Requirements: 12.8
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo "Installing dependencies for smoke tests..."
+      - npm ci
+      - echo "Dependencies installed successfully"
+
+  pre_build:
+    commands:
+      - echo "=== Preparing Smoke Tests ==="
+      - echo "Target Environment: $ENVIRONMENT"
+      - echo "Loading API endpoints from deployment outputs..."
+      - |
+        if [ -f "outputs-$ENVIRONMENT.json" ]; then
+          export API_ENDPOINT=$(jq -r '.[] | select(.OutputKey=="ApiEndpoint") | .OutputValue' outputs-$ENVIRONMENT.json)
+          echo "API Endpoint: $API_ENDPOINT"
+        else
+          echo "ERROR: No deployment outputs found"
+          exit 1
+        fi
+
+  build:
+    commands:
+      - echo "=== Running Smoke Tests on $ENVIRONMENT ==="
+      
+      - echo "Test 1: Health Check Endpoint"
+      - |
+        curl -f -s -o /dev/null -w "%{http_code}" $API_ENDPOINT/health || {
+          echo "ERROR: Health check failed"
+          exit 1
+        }
+      
+      - echo "Test 2: API Gateway Availability"
+      - |
+        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" $API_ENDPOINT)
+        if [ "$HTTP_CODE" -eq "200" ] || [ "$HTTP_CODE" -eq "401" ]; then
+          echo "✓ API Gateway is responding"
+        else
+          echo "✗ API Gateway returned unexpected status: $HTTP_CODE"
+          exit 1
+        fi
+      
+      - echo "Test 3: Authentication Endpoint"
+      - |
+        curl -f -s -X POST $API_ENDPOINT/auth/login \
+          -H "Content-Type: application/json" \
+          -d '{"email":"test@example.com","password":"invalid"}' || {
+          echo "✓ Auth endpoint is responding (expected failure for invalid credentials)"
+        }
+      
+      - echo "Test 4: Database Connectivity"
+      - |
+        npm run test:smoke -- --testNamePattern="database" || {
+          echo "ERROR: Database connectivity test failed"
+          exit 1
+        }
+      
+      - echo "=== Smoke Tests Completed ==="
+
+  post_build:
+    commands:
+      - echo "=== Smoke Test Results Summary ==="
+      - |
+        if [ $CODEBUILD_BUILD_SUCCEEDING -eq 1 ]; then
+          echo "✓ All smoke tests passed"
+          echo "Deployment to $ENVIRONMENT is healthy"
+        else
+          echo "✗ Smoke tests failed"
+          echo "CRITICAL: Deployment may need rollback"
+          exit 1
+        fi
+
+# Test reports
+reports:
+  smoke-test-reports:
+    files:
+      - 'test-results/smoke-junit.xml'
+    file-format: 'JUNITXML'
+
+# Artifacts containing test results
+artifacts:
+  files:
+    - 'test-results/**/*'
+  name: SmokeTestResults

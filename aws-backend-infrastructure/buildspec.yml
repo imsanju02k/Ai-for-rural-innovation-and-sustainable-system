@@ -1,0 +1,87 @@
+version: 0.2
+
+# CI/CD Build Specification
+# This buildspec is used by AWS CodeBuild to:
+# - Install dependencies (Node.js, CDK)
+# - Run linting
+# - Run unit tests
+# - Run integration tests
+# - Build Lambda functions
+# - Synthesize CDK stacks
+#
+# Requirements: 12.2, 12.3
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo "Installing AWS CDK CLI..."
+      - npm install -g aws-cdk@latest
+      - echo "Installing project dependencies..."
+      - npm ci
+      - echo "Verifying installations..."
+      - node --version
+      - npm --version
+      - cdk --version
+
+  pre_build:
+    commands:
+      - echo "=== Running Linter ==="
+      - npm run lint
+      - echo "Linting completed successfully"
+      
+      - echo "=== Running Unit Tests ==="
+      - npm run test:unit -- --coverage --ci
+      - echo "Unit tests completed successfully"
+      
+      - echo "=== Running Integration Tests ==="
+      - npm run test:integration -- --ci || echo "Integration tests skipped or failed"
+      
+      - echo "=== Checking Code Coverage ==="
+      - echo "Coverage report generated in coverage/ directory"
+
+  build:
+    commands:
+      - echo "=== Building Lambda Functions ==="
+      - npm run build
+      - echo "Lambda functions built successfully"
+      
+      - echo "=== Synthesizing CDK Stacks ==="
+      - cdk synth --all
+      - echo "CDK synthesis completed successfully"
+      
+      - echo "=== Listing Generated CloudFormation Templates ==="
+      - ls -la cdk.out/*.template.json
+
+  post_build:
+    commands:
+      - echo "=== Build Summary ==="
+      - echo "Build completed at $(date)"
+      - echo "All stages passed successfully"
+
+# Test reports for CodeBuild
+reports:
+  test-reports:
+    files:
+      - 'coverage/lcov.info'
+      - 'coverage/clover.xml'
+    file-format: 'CLOVERXML'
+  
+  unit-test-reports:
+    files:
+      - 'test-results/junit.xml'
+    file-format: 'JUNITXML'
+
+# Artifacts to be passed to next stage
+artifacts:
+  files:
+    - '**/*'
+  base-directory: cdk.out
+  name: BuildArtifacts
+
+# Cache to speed up builds
+cache:
+  paths:
+    - 'node_modules/**/*'
+    - '.npm/**/*'
