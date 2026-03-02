@@ -1,9 +1,16 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import BottomNav from '../components/BottomNav'
 import { Thermometer, Droplets, Wind, Sun, Activity, AlertTriangle, CheckCircle, TrendingUp } from 'lucide-react'
 
 const SensorMonitor = () => {
+  // Color mapping for dynamic classes (Tailwind requires static class names)
+  const colorMap = {
+    blue: { bg: 'bg-blue-50', text: 'text-blue-600', bar: 'bg-blue-600' },
+    orange: { bg: 'bg-orange-50', text: 'text-orange-600', bar: 'bg-orange-600' },
+    cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', bar: 'bg-cyan-600' },
+    yellow: { bg: 'bg-yellow-50', text: 'text-yellow-600', bar: 'bg-yellow-600' },
+  }
   const [sensors, setSensors] = useState([
     {
       id: 1,
@@ -123,8 +130,8 @@ const SensorMonitor = () => {
                   }`}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className={`w-10 h-10 bg-${sensor.color}-50 rounded-full flex items-center justify-center`}>
-                    <Icon size={20} className={`text-${sensor.color}-600`} />
+                  <div className={`w-10 h-10 ${colorMap[sensor.color].bg} rounded-full flex items-center justify-center`}>
+                    <Icon size={20} className={colorMap[sensor.color].text} />
                   </div>
                   {getTrendIcon(sensor.trend)}
                 </div>
@@ -154,7 +161,7 @@ const SensorMonitor = () => {
             <div className="flex items-center">
               {React.createElement(selectedSensor.icon, {
                 size: 24,
-                className: `text-${selectedSensor.color}-600 mr-3`,
+                className: `${colorMap[selectedSensor.color].text} mr-3`,
               })}
               <div>
                 <h3 className="text-lg font-semibold text-neutral-text">
@@ -202,7 +209,7 @@ const SensorMonitor = () => {
                 return (
                   <div key={index} className="flex-1 flex flex-col items-center">
                     <div
-                      className={`w-full mx-1 bg-${selectedSensor.color}-600 rounded-t transition-all`}
+                      className={`w-full mx-1 ${colorMap[selectedSensor.color].bar} rounded-t transition-all`}
                       style={{ height: `${height}%` }}
                     ></div>
                     <span className="text-xs text-neutral-text-secondary mt-2">
