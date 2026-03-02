@@ -1,0 +1,17 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - cd prototype
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: prototype/dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - prototype/node_modules/**/*
