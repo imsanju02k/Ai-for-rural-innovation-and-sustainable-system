@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { getItem, STORAGE_KEYS } from '../utils/localStorage'
+import appLogo from '../applogo.png'
 
 const Header = ({ location = 'Bangalore, Karnataka', notificationCount = 3, showBack = false, title = null }) => {
   const [isOnline, setIsOnline] = useState(true)
@@ -36,9 +37,7 @@ const Header = ({ location = 'Bangalore, Karnataka', notificationCount = 3, show
           </button>
         ) : (
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center mr-2">
-              <span className="text-white font-bold text-sm">KS</span>
-            </div>
+            <img src={appLogo} alt="KrishiSankalp AI" className="w-8 h-8 mr-2 rounded-full" />
             <span className="text-primary font-bold text-lg">KrishiSankalp AI</span>
           </div>
         )}
