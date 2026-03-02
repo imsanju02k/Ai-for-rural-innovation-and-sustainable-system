@@ -68,7 +68,7 @@ const Profile = () => {
     {
       icon: Award,
       label: 'Achievements',
-      action: () => console.log('Achievements'),
+      action: () => navigate('/achievements'),
     },
     {
       icon: LogOut,

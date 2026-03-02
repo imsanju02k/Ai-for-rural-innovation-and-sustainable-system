@@ -16,6 +16,7 @@ import SensorMonitor from './pages/SensorMonitor'
 import Alerts from './pages/Alerts'
 import Community from './pages/Community'
 import Profile from './pages/Profile'
+import Achievements from './pages/Achievements'
 import YieldPrediction from './pages/YieldPrediction'
 import Settings from './pages/Settings'
 import Farms from './pages/Farms'
@@ -72,6 +73,10 @@ function App() {
           <Route
             path="/profile"
             element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/achievements"
+            element={isAuthenticated ? <Achievements /> : <Navigate to="/login" />}
           />
           <Route
             path="/settings"
