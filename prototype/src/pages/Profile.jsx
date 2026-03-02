@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from '../contexts/ThemeContext'
 import Header from '../components/Header'
 import BottomNav from '../components/BottomNav'
 import {
@@ -10,6 +11,7 @@ import {
 
 const Profile = () => {
   const navigate = useNavigate()
+  const { isDark } = useTheme()
   const [isEditing, setIsEditing] = useState(false)
 
   // User profile data
@@ -68,12 +70,16 @@ const Profile = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-neutral-bg pb-20">
+    <div className={`min-h-screen pb-20 transition-theme duration-300 ${
+      isDark ? 'bg-dark-bg' : 'bg-neutral-bg'
+    }`}>
       <Header />
 
       <div className="max-w-md mx-auto px-4 py-6">
         {/* Profile Header */}
-        <div className="card mb-6">
+        <div className={`rounded-lg p-4 mb-6 ${
+          isDark ? 'bg-dark-surface' : 'bg-white'
+        }`}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center">
               <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-white text-2xl font-bold">
