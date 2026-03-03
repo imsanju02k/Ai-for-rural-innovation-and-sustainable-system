@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useAlerts } from '../contexts/AlertContext';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 import {
@@ -10,7 +11,7 @@ import { getItem, setItem, STORAGE_KEYS } from '../utils/localStorage';
 
 const Alerts = () => {
   const { isDark } = useTheme();
-  const [alerts, setAlerts] = useState([]);
+  const { alerts, markAlertAsRead, markAllAsRead, deleteAlert, updateAlerts } = useAlerts();
   const [filter, setFilter] = useState('all');
 
   // Initialize with sample alerts if none exist
@@ -65,26 +66,13 @@ const Alerts = () => {
           createdAt: new Date(Date.now() - 86400000).toISOString(),
         },
       ];
-      setAlerts(sampleAlerts);
-      setItem(STORAGE_KEYS.USER_ALERTS, sampleAlerts);
-    } else {
-      setAlerts(savedAlerts);
+      updateAlerts(sampleAlerts);
     }
   }, []);
 
-  // Save alerts whenever they change
-  useEffect(() => {
-    if (alerts.length > 0) {
-      setItem(STORAGE_KEYS.USER_ALERTS, alerts);
-    }
-  }, [alerts]);
-
   // Mark all as read when visiting alerts page
   useEffect(() => {
-    const unreadAlerts = alerts.filter(a => !a.read);
-    if (unreadAlerts.length > 0) {
-      handleMarkAllAsRead();
-    }
+    markAllAsRead();
   }, []);
 
   const getAlertIcon = (type) => {
@@ -108,17 +96,15 @@ const Alerts = () => {
   };
 
   const handleMarkAsRead = (alertId) => {
-    setAlerts(alerts.map(alert =>
-      alert.id === alertId ? { ...alert, read: true } : alert
-    ));
+    markAlertAsRead(alertId);
   };
 
   const handleMarkAllAsRead = () => {
-    setAlerts(alerts.map(alert => ({ ...alert, read: true })));
+    markAllAsRead();
   };
 
   const handleDeleteAlert = (alertId) => {
-    setAlerts(alerts.filter(alert => alert.id !== alertId));
+    deleteAlert(alertId);
   };
 
   const formatTime = (dateString) => {
@@ -141,8 +127,6 @@ const Alerts = () => {
     : alerts.filter(alert => alert.type === filter);
 
   const unreadCount = alerts.filter(a => !a.read).length;
-
-  const filterOptions = [
     { value: 'all', label: 'All', icon: null },
     { value: 'weather', label: 'Weather', icon: Cloud },
     { value: 'disease', label: 'Disease', icon: Bug },
@@ -190,10 +174,10 @@ const Alerts = () => {
                 key={option.value}
                 onClick={() => setFilter(option.value)}
                 className={`flex items-center px-4 py-2 rounded-full whitespace-nowrap transition-colors ${filter === option.value
-                    ? 'bg-primary text-white'
-                    : isDark
-                      ? 'bg-dark-surface text-dark-text'
-                      : 'bg-white text-neutral-text'
+                  ? 'bg-primary text-white'
+                  : isDark
+                    ? 'bg-dark-surface text-dark-text'
+                    : 'bg-white text-neutral-text'
                   }`}
               >
                 {Icon && <Icon size={16} className="mr-2" />}

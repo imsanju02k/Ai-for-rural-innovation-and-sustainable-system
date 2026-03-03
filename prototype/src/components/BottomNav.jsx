@@ -1,14 +1,16 @@
 import { Home, Sprout, Bell, Users, User } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useAlerts } from '../contexts/AlertContext'
 
 const BottomNav = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { unreadCount } = useAlerts()
 
   const navItems = [
     { icon: Home, label: 'Home', path: '/dashboard' },
     { icon: Sprout, label: 'Farms', path: '/farms' },
-    { icon: Bell, label: 'Alerts', path: '/alerts', badge: 3 },
+    { icon: Bell, label: 'Alerts', path: '/alerts', badge: unreadCount },
     { icon: Users, label: 'Community', path: '/community' },
     { icon: User, label: 'Profile', path: '/profile' },
   ]

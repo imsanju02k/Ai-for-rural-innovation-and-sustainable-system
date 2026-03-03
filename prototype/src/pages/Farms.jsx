@@ -435,16 +435,16 @@ const Farms = () => {
                             </div>
 
                             {/* Buttons */}
-                            <div className="flex gap-3 pt-4">
+                            <div className="flex gap-3 pt-4 w-full">
                                 <button
                                     onClick={() => setShowModal(false)}
-                                    className={`flex-1 px-4 py-3 rounded-lg ${isDark ? 'bg-dark-bg text-dark-text' : 'bg-neutral-bg text-neutral-text'}`}
+                                    className={`flex-1 px-4 py-3 rounded-lg font-medium ${isDark ? 'bg-dark-bg text-dark-text hover:bg-dark-bg/80' : 'bg-neutral-bg text-neutral-text hover:bg-neutral-bg/80'}`}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleSaveFarm}
-                                    className="flex-1 btn-primary flex items-center justify-center"
+                                    className="flex-1 btn-primary flex items-center justify-center font-medium"
                                 >
                                     <Save size={16} className="mr-2" />
                                     {editingId ? 'Update Farm' : 'Add Farm'}
