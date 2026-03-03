@@ -127,6 +127,8 @@ const Alerts = () => {
     : alerts.filter(alert => alert.type === filter);
 
   const unreadCount = alerts.filter(a => !a.read).length;
+
+  const filterOptions = [
     { value: 'all', label: 'All', icon: null },
     { value: 'weather', label: 'Weather', icon: Cloud },
     { value: 'disease', label: 'Disease', icon: Bug },
