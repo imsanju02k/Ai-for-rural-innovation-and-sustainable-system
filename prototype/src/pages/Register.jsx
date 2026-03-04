@@ -38,22 +38,39 @@ const Register = () => {
             return
         }
 
-        // Save user profile to localStorage
+        // Create user profile with password and ID
         const userProfile = {
+            id: 'user_' + Date.now(),
             name: formData.name,
             phone: formData.phone,
             email: formData.email,
+            password: formData.password,
             location: 'Bangalore, Karnataka',
             farmName: 'My Farm',
             farmSize: '5 acres',
             crops: ['Rice', 'Wheat'],
             photo: null,
             joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+            createdAt: new Date().toISOString(),
         }
 
+        // Get existing registered users
+        const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]')
+        
+        // Check if phone already exists
+        if (registeredUsers.some(u => u.phone === formData.phone)) {
+            setErrors({ phone: 'Phone number already registered' })
+            return
+        }
+
+        // Add new user to registered users
+        registeredUsers.push(userProfile)
+        localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers))
+
+        // Save current user profile
         setItem(STORAGE_KEYS.USER_PROFILE, userProfile)
         setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
-        setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
+        setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + userProfile.id)
 
         // Navigate to dashboard
         navigate('/dashboard')
