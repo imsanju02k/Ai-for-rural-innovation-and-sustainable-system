@@ -23,6 +23,7 @@ import Achievements from './pages/Achievements'
 import YieldPrediction from './pages/YieldPrediction'
 import Settings from './pages/Settings'
 import Farms from './pages/Farms'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -95,6 +96,10 @@ function App() {
           <Route
             path="/farms"
             element={isAuthenticated ? <Farms /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/admin"
+            element={<AdminDashboard />}
           />
         </Routes>
       </Router>
