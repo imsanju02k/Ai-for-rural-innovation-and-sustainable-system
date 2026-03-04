@@ -55,29 +55,25 @@ const Login = ({ onLogin }) => {
     setErrors({})
 
     try {
-      // TODO: Replace with actual backend API call
-      // Example: const response = await fetch('/api/auth/login', { ... })
-
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000))
 
-      // Create user profile
-      const userData = {
-        name: 'Farmer User',
-        phone: formData.phone,
-        email: 'farmer@example.com',
-        location: 'Bangalore, Karnataka',
-        farmName: 'My Farm',
-        farmSize: '5 acres',
-        crops: ['Rice', 'Wheat'],
-        photo: null,
-        joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+      // Get registered users from localStorage
+      const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]')
+
+      // Find user with matching phone and password
+      const user = registeredUsers.find(u => u.phone === formData.phone && u.password === formData.password)
+
+      if (!user) {
+        setErrors({ general: 'Invalid phone number or password' })
+        setIsLoading(false)
+        return
       }
 
       // Save user profile
-      setItem(STORAGE_KEYS.USER_PROFILE, userData)
+      setItem(STORAGE_KEYS.USER_PROFILE, user)
       setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
-      setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
+      setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + user.id)
 
       setMessage('Login successful!')
       setTimeout(() => {
@@ -147,32 +143,25 @@ const Login = ({ onLogin }) => {
     setErrors({})
 
     try {
-      // TODO: Replace with actual OTP verification API
-      // Example: const response = await fetch('/api/auth/verify-otp', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ phone: formData.phone, otp: formData.otp })
-      // })
-
       // Simulate OTP verification delay
       await new Promise(resolve => setTimeout(resolve, 1000))
 
-      // Create user profile
-      const otpUserData = {
-        name: 'Farmer User',
-        phone: formData.phone,
-        email: 'farmer@example.com',
-        location: 'Bangalore, Karnataka',
-        farmName: 'My Farm',
-        farmSize: '5 acres',
-        crops: ['Rice', 'Wheat'],
-        photo: null,
-        joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+      // Get registered users from localStorage
+      const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]')
+
+      // Find user with matching phone
+      const user = registeredUsers.find(u => u.phone === formData.phone)
+
+      if (!user) {
+        setErrors({ otp: 'User not found. Please register first.' })
+        setIsLoading(false)
+        return
       }
 
       // Save user profile
-      setItem(STORAGE_KEYS.USER_PROFILE, otpUserData)
+      setItem(STORAGE_KEYS.USER_PROFILE, user)
       setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
-      setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
+      setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + user.id)
 
       setMessage('OTP verified successfully!')
       setTimeout(() => {
@@ -192,37 +181,38 @@ const Login = ({ onLogin }) => {
     setErrors({})
 
     try {
-      // TODO: Replace with actual Google OAuth integration
-      // Example using Google Sign-In library:
-      // const result = await window.gapi.auth2.getAuthInstance().signIn()
-      // const profile = result.getBasicProfile()
-
-      // Or using OAuth 2.0 flow:
-      // const response = await fetch('/api/auth/google', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ idToken: googleIdToken })
-      // })
-
       // Simulate Google login delay
       await new Promise(resolve => setTimeout(resolve, 1500))
 
-      // Create user profile
-      const googleUserData = {
-        name: 'Google User',
-        phone: 'google_' + Date.now(),
-        email: 'user@gmail.com',
-        location: 'Bangalore, Karnataka',
-        farmName: 'My Farm',
-        farmSize: '5 acres',
-        crops: ['Rice', 'Wheat'],
-        photo: null,
-        joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+      // Get registered users from localStorage
+      const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]')
+
+      // For demo: use first registered user or create demo user
+      let user = registeredUsers.find(u => u.email && u.email.includes('@gmail.com'))
+
+      if (!user) {
+        // Create demo Google user if no Gmail user exists
+        user = {
+          id: 'google_' + Date.now(),
+          name: 'Demo Farmer',
+          phone: '+91 9876543210',
+          email: 'demo@gmail.com',
+          password: 'demo123',
+          location: 'Bangalore, Karnataka',
+          farmName: 'Demo Farm',
+          farmSize: '5 acres',
+          crops: ['Rice', 'Wheat'],
+          photo: null,
+          joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+        }
+        registeredUsers.push(user)
+        localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers))
       }
 
       // Save user profile
-      setItem(STORAGE_KEYS.USER_PROFILE, googleUserData)
-      setItem(STORAGE_KEYS.AUTH_PHONE, googleUserData.phone)
-      setItem(STORAGE_KEYS.AUTH_TOKEN, 'google_' + Date.now())
+      setItem(STORAGE_KEYS.USER_PROFILE, user)
+      setItem(STORAGE_KEYS.AUTH_PHONE, user.phone)
+      setItem(STORAGE_KEYS.AUTH_TOKEN, 'google_' + user.id)
 
       setMessage('Logged in with Gmail successfully!')
       setTimeout(() => {
