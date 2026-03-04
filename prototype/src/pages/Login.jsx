@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Eye, EyeOff, Phone, Lock, Mail } from 'lucide-react'
+import { Eye, EyeOff, Phone, Lock, Mail, Loader } from 'lucide-react'
 import appLogo from '../applogo.png'
 import { setItem, STORAGE_KEYS } from '../utils/localStorage'
 
@@ -9,6 +9,7 @@ const Login = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [loginMode, setLoginMode] = useState('password') // 'password' or 'otp'
   const [showOtpInput, setShowOtpInput] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
     phone: '',
     password: '',
@@ -18,24 +19,27 @@ const Login = ({ onLogin }) => {
   const [message, setMessage] = useState('')
 
   const validatePhone = (phone) => {
+    // Accept Indian phone numbers and international formats
     const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/
-    return phoneRegex.test(phone)
+    return phoneRegex.test(phone.trim())
   }
 
   const validatePassword = (password) => {
-    return password.length >= 6
+    return password.trim().length >= 6
   }
 
-  const handlePasswordLogin = (e) => {
+  const handlePasswordLogin = async (e) => {
     e.preventDefault()
     const newErrors = {}
 
+    // Validate phone
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required'
     } else if (!validatePhone(formData.phone)) {
       newErrors.phone = 'Invalid phone number format'
     }
 
+    // Validate password
     if (!formData.password.trim()) {
       newErrors.password = 'Password is required'
     } else if (!validatePassword(formData.password)) {
@@ -47,28 +51,48 @@ const Login = ({ onLogin }) => {
       return
     }
 
-    // Simulate login - create user profile
-    const userData = {
-      name: 'Farmer User',
-      phone: formData.phone,
-      email: 'farmer@example.com',
-      location: 'Bangalore, Karnataka',
-      farmName: 'My Farm',
-      farmSize: '5 acres',
-      crops: ['Rice', 'Wheat'],
-      photo: null,
-      joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
-    }
+    setIsLoading(true)
+    setErrors({})
 
-    // Save user profile
-    setItem(STORAGE_KEYS.USER_PROFILE, userData)
-    setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
-    setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
-    onLogin()
-    navigate('/dashboard')
+    try {
+      // TODO: Replace with actual backend API call
+      // Example: const response = await fetch('/api/auth/login', { ... })
+
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      // Create user profile
+      const userData = {
+        name: 'Farmer User',
+        phone: formData.phone,
+        email: 'farmer@example.com',
+        location: 'Bangalore, Karnataka',
+        farmName: 'My Farm',
+        farmSize: '5 acres',
+        crops: ['Rice', 'Wheat'],
+        photo: null,
+        joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+      }
+
+      // Save user profile
+      setItem(STORAGE_KEYS.USER_PROFILE, userData)
+      setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
+      setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
+
+      setMessage('Login successful!')
+      setTimeout(() => {
+        onLogin()
+        navigate('/dashboard')
+      }, 500)
+    } catch (error) {
+      setErrors({ general: 'Login failed. Please try again.' })
+      console.error('Login error:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleSendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault()
     const newErrors = {}
 
@@ -83,13 +107,30 @@ const Login = ({ onLogin }) => {
       return
     }
 
-    // Simulate OTP sending
-    setMessage('OTP sent to ' + formData.phone)
-    setShowOtpInput(true)
+    setIsLoading(true)
     setErrors({})
+
+    try {
+      // TODO: Replace with actual OTP service (Twilio, AWS SNS, etc.)
+      // Example: const response = await fetch('/api/auth/send-otp', { 
+      //   method: 'POST',
+      //   body: JSON.stringify({ phone: formData.phone })
+      // })
+
+      // Simulate OTP sending delay
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      setMessage('OTP sent to ' + formData.phone + '. Check your SMS.')
+      setShowOtpInput(true)
+    } catch (error) {
+      setErrors({ general: 'Failed to send OTP. Please try again.' })
+      console.error('OTP send error:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault()
 
     if (!formData.otp.trim()) {
@@ -97,60 +138,103 @@ const Login = ({ onLogin }) => {
       return
     }
 
-    if (formData.otp.length !== 6) {
+    if (formData.otp.length !== 6 || !/^\d+$/.test(formData.otp)) {
       setErrors({ otp: 'OTP must be 6 digits' })
       return
     }
 
-    // Simulate OTP verification - create user profile
-    const otpUserData = {
-      name: 'Farmer User',
-      phone: formData.phone,
-      email: 'farmer@example.com',
-      location: 'Bangalore, Karnataka',
-      farmName: 'My Farm',
-      farmSize: '5 acres',
-      crops: ['Rice', 'Wheat'],
-      photo: null,
-      joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
-    }
+    setIsLoading(true)
+    setErrors({})
 
-    // Save user profile
-    setItem(STORAGE_KEYS.USER_PROFILE, otpUserData)
-    setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
-    setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
-    
-    setMessage('OTP verified successfully')
-    setTimeout(() => {
-      onLogin()
-      navigate('/dashboard')
-    }, 1000)
+    try {
+      // TODO: Replace with actual OTP verification API
+      // Example: const response = await fetch('/api/auth/verify-otp', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ phone: formData.phone, otp: formData.otp })
+      // })
+
+      // Simulate OTP verification delay
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      // Create user profile
+      const otpUserData = {
+        name: 'Farmer User',
+        phone: formData.phone,
+        email: 'farmer@example.com',
+        location: 'Bangalore, Karnataka',
+        farmName: 'My Farm',
+        farmSize: '5 acres',
+        crops: ['Rice', 'Wheat'],
+        photo: null,
+        joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+      }
+
+      // Save user profile
+      setItem(STORAGE_KEYS.USER_PROFILE, otpUserData)
+      setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
+      setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
+
+      setMessage('OTP verified successfully!')
+      setTimeout(() => {
+        onLogin()
+        navigate('/dashboard')
+      }, 500)
+    } catch (error) {
+      setErrors({ otp: 'OTP verification failed. Please try again.' })
+      console.error('OTP verification error:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleGoogleLogin = () => {
-    // Simulate Google login - create user profile
-    const googleUserData = {
-      name: 'Google User',
-      phone: 'google_' + Date.now(),
-      email: 'user@gmail.com',
-      location: 'Bangalore, Karnataka',
-      farmName: 'My Farm',
-      farmSize: '5 acres',
-      crops: ['Rice', 'Wheat'],
-      photo: null,
-      joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
-    }
+  const handleGoogleLogin = async () => {
+    setIsLoading(true)
+    setErrors({})
 
-    // Save user profile
-    setItem(STORAGE_KEYS.USER_PROFILE, googleUserData)
-    setItem(STORAGE_KEYS.AUTH_PHONE, googleUserData.phone)
-    setItem(STORAGE_KEYS.AUTH_TOKEN, 'google_' + Date.now())
-    
-    setMessage('Logged in with Gmail successfully')
-    setTimeout(() => {
-      onLogin()
-      navigate('/dashboard')
-    }, 1000)
+    try {
+      // TODO: Replace with actual Google OAuth integration
+      // Example using Google Sign-In library:
+      // const result = await window.gapi.auth2.getAuthInstance().signIn()
+      // const profile = result.getBasicProfile()
+
+      // Or using OAuth 2.0 flow:
+      // const response = await fetch('/api/auth/google', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ idToken: googleIdToken })
+      // })
+
+      // Simulate Google login delay
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      // Create user profile
+      const googleUserData = {
+        name: 'Google User',
+        phone: 'google_' + Date.now(),
+        email: 'user@gmail.com',
+        location: 'Bangalore, Karnataka',
+        farmName: 'My Farm',
+        farmSize: '5 acres',
+        crops: ['Rice', 'Wheat'],
+        photo: null,
+        joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+      }
+
+      // Save user profile
+      setItem(STORAGE_KEYS.USER_PROFILE, googleUserData)
+      setItem(STORAGE_KEYS.AUTH_PHONE, googleUserData.phone)
+      setItem(STORAGE_KEYS.AUTH_TOKEN, 'google_' + Date.now())
+
+      setMessage('Logged in with Gmail successfully!')
+      setTimeout(() => {
+        onLogin()
+        navigate('/dashboard')
+      }, 500)
+    } catch (error) {
+      setErrors({ general: 'Gmail login failed. Please try again.' })
+      console.error('Google login error:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleForgotPassword = () => {
@@ -180,6 +264,13 @@ const Login = ({ onLogin }) => {
           </div>
         )}
 
+        {/* Error Message */}
+        {errors.general && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
+            {errors.general}
+          </div>
+        )}
+
         {/* Login Mode Tabs */}
         <div className="flex gap-2 mb-6">
           <button
@@ -190,8 +281,8 @@ const Login = ({ onLogin }) => {
               setMessage('')
             }}
             className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${loginMode === 'password'
-                ? 'bg-primary text-white'
-                : 'bg-neutral-bg text-neutral-text'
+              ? 'bg-primary text-white'
+              : 'bg-neutral-bg text-neutral-text'
               }`}
           >
             Password
@@ -204,8 +295,8 @@ const Login = ({ onLogin }) => {
               setMessage('')
             }}
             className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${loginMode === 'otp'
-                ? 'bg-primary text-white'
-                : 'bg-neutral-bg text-neutral-text'
+              ? 'bg-primary text-white'
+              : 'bg-neutral-bg text-neutral-text'
               }`}
           >
             OTP
@@ -272,8 +363,9 @@ const Login = ({ onLogin }) => {
             </div>
 
             {/* Login Button */}
-            <button type="submit" className="btn-primary w-full mt-6">
-              Login
+            <button type="submit" className="btn-primary w-full mt-6 flex items-center justify-center gap-2" disabled={isLoading}>
+              {isLoading && <Loader size={18} className="animate-spin" />}
+              {isLoading ? 'Logging in...' : 'Login'}
             </button>
           </form>
         )}
@@ -321,8 +413,9 @@ const Login = ({ onLogin }) => {
             )}
 
             {/* Send/Verify Button */}
-            <button type="submit" className="btn-primary w-full mt-6">
-              {showOtpInput ? 'Verify OTP' : 'Send OTP'}
+            <button type="submit" className="btn-primary w-full mt-6 flex items-center justify-center gap-2" disabled={isLoading}>
+              {isLoading && <Loader size={18} className="animate-spin" />}
+              {isLoading ? (showOtpInput ? 'Verifying...' : 'Sending...') : (showOtpInput ? 'Verify OTP' : 'Send OTP')}
             </button>
           </form>
         )}
@@ -337,10 +430,11 @@ const Login = ({ onLogin }) => {
         {/* Google Login */}
         <button
           onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-neutral-divider rounded-lg hover:bg-neutral-bg transition-colors"
+          disabled={isLoading}
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-neutral-divider rounded-lg hover:bg-neutral-bg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Mail size={20} className="text-primary" />
-          <span className="font-medium text-neutral-text">Login with Gmail</span>
+          {isLoading ? <Loader size={20} className="animate-spin text-primary" /> : <Mail size={20} className="text-primary" />}
+          <span className="font-medium text-neutral-text">{isLoading ? 'Logging in...' : 'Login with Gmail'}</span>
         </button>
 
         {/* Register Link */}

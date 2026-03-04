@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Phone, Lock } from 'lucide-react'
+import { ArrowLeft, Phone, Lock, Loader } from 'lucide-react'
 import appLogo from '../applogo.png'
 
 const ForgotPassword = () => {
   const navigate = useNavigate()
   const [step, setStep] = useState('phone') // 'phone', 'otp', 'password'
+  const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
     phone: '',
     otp: '',
@@ -17,10 +18,10 @@ const ForgotPassword = () => {
 
   const validatePhone = (phone) => {
     const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/
-    return phoneRegex.test(phone)
+    return phoneRegex.test(phone.trim())
   }
 
-  const handleSendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault()
     const newErrors = {}
 
@@ -35,12 +36,24 @@ const ForgotPassword = () => {
       return
     }
 
-    setMessage('OTP sent to ' + formData.phone)
-    setStep('otp')
+    setIsLoading(true)
     setErrors({})
+
+    try {
+      // TODO: Replace with actual OTP service (Twilio, AWS SNS, etc.)
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      setMessage('OTP sent to ' + formData.phone + '. Check your SMS.')
+      setStep('otp')
+    } catch (error) {
+      setErrors({ general: 'Failed to send OTP. Please try again.' })
+      console.error('OTP send error:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault()
 
     if (!formData.otp.trim()) {
@@ -48,17 +61,29 @@ const ForgotPassword = () => {
       return
     }
 
-    if (formData.otp.length !== 6) {
+    if (formData.otp.length !== 6 || !/^\d+$/.test(formData.otp)) {
       setErrors({ otp: 'OTP must be 6 digits' })
       return
     }
 
-    setMessage('OTP verified successfully')
-    setStep('password')
+    setIsLoading(true)
     setErrors({})
+
+    try {
+      // TODO: Replace with actual OTP verification API
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      setMessage('OTP verified successfully!')
+      setStep('password')
+    } catch (error) {
+      setErrors({ otp: 'OTP verification failed. Please try again.' })
+      console.error('OTP verification error:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault()
     const newErrors = {}
 
@@ -79,10 +104,23 @@ const ForgotPassword = () => {
       return
     }
 
-    setMessage('Password reset successfully')
-    setTimeout(() => {
-      navigate('/login')
-    }, 2000)
+    setIsLoading(true)
+    setErrors({})
+
+    try {
+      // TODO: Replace with actual password reset API
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      setMessage('Password reset successfully!')
+      setTimeout(() => {
+        navigate('/login')
+      }, 1500)
+    } catch (error) {
+      setErrors({ general: 'Password reset failed. Please try again.' })
+      console.error('Password reset error:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -119,6 +157,13 @@ const ForgotPassword = () => {
           </div>
         )}
 
+        {/* Error Message */}
+        {errors.general && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
+            {errors.general}
+          </div>
+        )}
+
         {/* Step 1: Phone Number */}
         {step === 'phone' && (
           <form onSubmit={handleSendOtp} className="space-y-4">
@@ -140,8 +185,9 @@ const ForgotPassword = () => {
               {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
             </div>
 
-            <button type="submit" className="btn-primary w-full mt-6">
-              Send OTP
+            <button type="submit" className="btn-primary w-full mt-6 flex items-center justify-center gap-2" disabled={isLoading}>
+              {isLoading && <Loader size={18} className="animate-spin" />}
+              {isLoading ? 'Sending...' : 'Send OTP'}
             </button>
           </form>
         )}
@@ -165,8 +211,9 @@ const ForgotPassword = () => {
               {errors.otp && <p className="text-red-500 text-sm mt-1">{errors.otp}</p>}
             </div>
 
-            <button type="submit" className="btn-primary w-full mt-6">
-              Verify OTP
+            <button type="submit" className="btn-primary w-full mt-6 flex items-center justify-center gap-2" disabled={isLoading}>
+              {isLoading && <Loader size={18} className="animate-spin" />}
+              {isLoading ? 'Verifying...' : 'Verify OTP'}
             </button>
 
             <button
@@ -218,8 +265,9 @@ const ForgotPassword = () => {
               {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
             </div>
 
-            <button type="submit" className="btn-primary w-full mt-6">
-              Reset Password
+            <button type="submit" className="btn-primary w-full mt-6 flex items-center justify-center gap-2" disabled={isLoading}>
+              {isLoading && <Loader size={18} className="animate-spin" />}
+              {isLoading ? 'Resetting...' : 'Reset Password'}
             </button>
           </form>
         )}
