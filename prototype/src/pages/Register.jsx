@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { User, Phone, Mail, Lock, MapPin } from 'lucide-react'
+import { setItem, STORAGE_KEYS } from '../utils/localStorage'
 
 const Register = () => {
     const navigate = useNavigate()
@@ -13,11 +14,49 @@ const Register = () => {
         language: 'en',
         agreedToTerms: false,
     })
+    const [errors, setErrors] = useState({})
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        // Simulate registration
-        navigate('/login')
+
+        // Validate form
+        const newErrors = {}
+        if (!formData.name.trim()) newErrors.name = 'Name is required'
+        if (!formData.phone.trim()) newErrors.phone = 'Phone is required'
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = 'Passwords do not match'
+        }
+        if (formData.password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters'
+        }
+        if (!formData.agreedToTerms) {
+            newErrors.agreedToTerms = 'You must agree to terms'
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors)
+            return
+        }
+
+        // Save user profile to localStorage
+        const userProfile = {
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email,
+            location: 'Bangalore, Karnataka',
+            farmName: 'My Farm',
+            farmSize: '5 acres',
+            crops: ['Rice', 'Wheat'],
+            photo: null,
+            joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+        }
+
+        setItem(STORAGE_KEYS.USER_PROFILE, userProfile)
+        setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
+        setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
+
+        // Navigate to dashboard
+        navigate('/dashboard')
     }
 
     const getPasswordStrength = (password) => {
@@ -51,10 +90,11 @@ const Register = () => {
                                 placeholder="Enter your name"
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                className="input-field pl-12"
+                                className={`input-field pl-12 ${errors.name ? 'border-red-500' : ''}`}
                                 required
                             />
                         </div>
+                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                     </div>
 
                     {/* Phone */}
@@ -69,10 +109,11 @@ const Register = () => {
                                 placeholder="+91 98765 43210"
                                 value={formData.phone}
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                className="input-field pl-12"
+                                className={`input-field pl-12 ${errors.phone ? 'border-red-500' : ''}`}
                                 required
                             />
                         </div>
+                        {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                     </div>
 
                     {/* Email (Optional) */}
@@ -104,7 +145,7 @@ const Register = () => {
                                 placeholder="Create a password"
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                className="input-field pl-12"
+                                className={`input-field pl-12 ${errors.password ? 'border-red-500' : ''}`}
                                 required
                             />
                         </div>
@@ -113,6 +154,7 @@ const Register = () => {
                                 Strength: {passwordStrength.strength}
                             </p>
                         )}
+                        {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                     </div>
 
                     {/* Confirm Password */}
@@ -127,10 +169,11 @@ const Register = () => {
                                 placeholder="Confirm your password"
                                 value={formData.confirmPassword}
                                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                                className="input-field pl-12"
+                                className={`input-field pl-12 ${errors.confirmPassword ? 'border-red-500' : ''}`}
                                 required
                             />
                         </div>
+                        {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
                     </div>
 
                     {/* Language Preference */}
@@ -168,25 +211,28 @@ const Register = () => {
                     </div>
 
                     {/* Terms and Conditions */}
-                    <div className="flex items-start">
-                        <input
-                            type="checkbox"
-                            id="terms"
-                            checked={formData.agreedToTerms}
-                            onChange={(e) => setFormData({ ...formData, agreedToTerms: e.target.checked })}
-                            className="mt-1 mr-2"
-                            required
-                        />
-                        <label htmlFor="terms" className="text-sm text-neutral-text-secondary">
-                            I agree to the{' '}
-                            <button type="button" className="text-primary hover:underline">
-                                Terms & Conditions
-                            </button>{' '}
-                            and{' '}
-                            <button type="button" className="text-primary hover:underline">
-                                Privacy Policy
-                            </button>
-                        </label>
+                    <div>
+                        <div className="flex items-start">
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                checked={formData.agreedToTerms}
+                                onChange={(e) => setFormData({ ...formData, agreedToTerms: e.target.checked })}
+                                className="mt-1 mr-2"
+                                required
+                            />
+                            <label htmlFor="terms" className="text-sm text-neutral-text-secondary">
+                                I agree to the{' '}
+                                <button type="button" className="text-primary hover:underline">
+                                    Terms & Conditions
+                                </button>{' '}
+                                and{' '}
+                                <button type="button" className="text-primary hover:underline">
+                                    Privacy Policy
+                                </button>
+                            </label>
+                        </div>
+                        {errors.agreedToTerms && <p className="text-red-500 text-sm mt-1">{errors.agreedToTerms}</p>}
                     </div>
 
                     {/* Register Button */}
