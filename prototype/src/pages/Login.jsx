@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Leaf, Eye, EyeOff, Phone, Lock } from 'lucide-react'
+import { Eye, EyeOff, Phone, Lock } from 'lucide-react'
+import appLogo from '../applogo.png'
 
 const Login = ({ onLogin }) => {
   const navigate = useNavigate()
@@ -22,9 +23,7 @@ const Login = ({ onLogin }) => {
       <div className="flex-1 flex flex-col px-6 py-8">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center">
-            <Leaf size={40} className="text-white" />
-          </div>
+          <img src={appLogo} alt="KrishiSankalp" className="w-20 h-20 rounded-full object-cover" />
         </div>
 
         {/* Title */}

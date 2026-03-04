@@ -10,7 +10,7 @@ const BottomNav = () => {
   const navItems = [
     { icon: Home, label: 'Home', path: '/dashboard' },
     { icon: Sprout, label: 'Farms', path: '/farms' },
-    { icon: Bell, label: 'Alerts', path: '/alerts', badge: unreadCount },
+    { icon: Bell, label: 'Alerts', path: '/alerts', badge: unreadCount > 0 ? unreadCount : null },
     { icon: Users, label: 'Community', path: '/community' },
     { icon: User, label: 'Profile', path: '/profile' },
   ]
