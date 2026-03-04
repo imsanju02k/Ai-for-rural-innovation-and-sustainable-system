@@ -47,7 +47,21 @@ const Login = ({ onLogin }) => {
       return
     }
 
-    // Simulate login - in real app, validate against backend
+    // Simulate login - create user profile
+    const userData = {
+      name: 'Farmer User',
+      phone: formData.phone,
+      email: 'farmer@example.com',
+      location: 'Bangalore, Karnataka',
+      farmName: 'My Farm',
+      farmSize: '5 acres',
+      crops: ['Rice', 'Wheat'],
+      photo: null,
+      joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+    }
+
+    // Save user profile
+    setItem(STORAGE_KEYS.USER_PROFILE, userData)
     setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
     setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
     onLogin()
@@ -88,21 +102,55 @@ const Login = ({ onLogin }) => {
       return
     }
 
-    // Simulate OTP verification
+    // Simulate OTP verification - create user profile
+    const otpUserData = {
+      name: 'Farmer User',
+      phone: formData.phone,
+      email: 'farmer@example.com',
+      location: 'Bangalore, Karnataka',
+      farmName: 'My Farm',
+      farmSize: '5 acres',
+      crops: ['Rice', 'Wheat'],
+      photo: null,
+      joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+    }
+
+    // Save user profile
+    setItem(STORAGE_KEYS.USER_PROFILE, otpUserData)
     setItem(STORAGE_KEYS.AUTH_PHONE, formData.phone)
     setItem(STORAGE_KEYS.AUTH_TOKEN, 'user_' + Date.now())
-    onLogin()
-    navigate('/dashboard')
+    
+    setMessage('OTP verified successfully')
+    setTimeout(() => {
+      onLogin()
+      navigate('/dashboard')
+    }, 1000)
   }
 
   const handleGoogleLogin = () => {
-    // Simulate Google login
-    setMessage('Google login integration coming soon')
-    // In real app, integrate with Google OAuth
-    setItem(STORAGE_KEYS.AUTH_PHONE, 'google_user_' + Date.now())
+    // Simulate Google login - create user profile
+    const googleUserData = {
+      name: 'Google User',
+      phone: 'google_' + Date.now(),
+      email: 'user@gmail.com',
+      location: 'Bangalore, Karnataka',
+      farmName: 'My Farm',
+      farmSize: '5 acres',
+      crops: ['Rice', 'Wheat'],
+      photo: null,
+      joinedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
+    }
+
+    // Save user profile
+    setItem(STORAGE_KEYS.USER_PROFILE, googleUserData)
+    setItem(STORAGE_KEYS.AUTH_PHONE, googleUserData.phone)
     setItem(STORAGE_KEYS.AUTH_TOKEN, 'google_' + Date.now())
-    onLogin()
-    navigate('/dashboard')
+    
+    setMessage('Logged in with Gmail successfully')
+    setTimeout(() => {
+      onLogin()
+      navigate('/dashboard')
+    }, 1000)
   }
 
   const handleForgotPassword = () => {
