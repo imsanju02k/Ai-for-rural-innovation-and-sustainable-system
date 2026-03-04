@@ -104,7 +104,7 @@ const SensorMonitor = () => {
 
   return (
     <div className="min-h-screen bg-neutral-bg pb-20">
-      <Header />
+      <Header showBack={true} title="IoT Sensor Monitor" />
 
       <div className="max-w-md mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">

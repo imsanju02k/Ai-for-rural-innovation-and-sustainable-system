@@ -104,7 +104,7 @@ const YieldPrediction = () => {
 
     return (
         <div className="min-h-screen bg-neutral-bg pb-20">
-            <Header />
+            <Header showBack={true} title="Yield Prediction" />
 
             <div className="max-w-md mx-auto px-4 py-6">
                 <h1 className="text-2xl font-bold text-neutral-text mb-6">

@@ -54,9 +54,9 @@ const Header = ({ location = 'Bangalore, Karnataka', notificationCount = 3, show
         )}
 
         {/* Right Icons */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-4">
           {/* Online/Offline Indicator */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             {isOnline ? (
               <Wifi size={20} className="text-status-success" />
             ) : (
@@ -65,10 +65,10 @@ const Header = ({ location = 'Bangalore, Karnataka', notificationCount = 3, show
           </div>
 
           {/* Notifications */}
-          <button onClick={() => navigate('/alerts')} className="relative">
+          <button onClick={() => navigate('/alerts')} className="relative flex items-center justify-center">
             <Bell size={24} className={isDark ? 'text-dark-text' : 'text-neutral-text'} />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-secondary-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-secondary-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
                 {unreadCount}
               </span>
             )}

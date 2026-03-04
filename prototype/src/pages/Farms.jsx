@@ -159,7 +159,7 @@ const Farms = () => {
     if (loading) {
         return (
             <div className={`min-h-screen ${isDark ? 'bg-dark-bg' : 'bg-neutral-bg'}`}>
-                <Header />
+                <Header showBack={true} title="My Farms" />
                 <div className="max-w-md mx-auto px-4 py-6">
                     <div className="flex items-center justify-center h-64">
                         <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>

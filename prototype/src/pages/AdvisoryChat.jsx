@@ -111,7 +111,7 @@ const AdvisoryChat = () => {
 
   return (
     <div className="min-h-screen bg-neutral-bg pb-20 flex flex-col">
-      <Header />
+      <Header showBack={true} title="Advisory Chat" />
 
       <div className="max-w-md mx-auto w-full flex-1 flex flex-col">
         {/* Chat Header */}
