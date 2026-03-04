@@ -469,10 +469,11 @@ const Farms = () => {
                                 {editingId ? 'Update Farm' : 'Add Farm'}
                             </button>
                         </div>
-
-                        <BottomNav />
                     </div>
-                    )
+                </div>
+            )}
+        </div>
+    )
 }
 
-                    export default Farms
+export default Farms
