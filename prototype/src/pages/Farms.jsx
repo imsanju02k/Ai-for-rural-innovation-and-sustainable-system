@@ -327,8 +327,8 @@ const Farms = () => {
             {/* Add/Edit Farm Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-end z-50">
-                    <div className={`w-full ${isDark ? 'bg-dark-surface' : 'bg-white'} rounded-t-2xl p-6 max-h-[90vh] overflow-y-auto`}>
-                        <div className="flex items-center justify-between mb-6">
+                    <div className={`w-full ${isDark ? 'bg-dark-surface' : 'bg-white'} rounded-t-2xl max-h-[95vh] overflow-y-auto flex flex-col`}>
+                        <div className="sticky top-0 flex items-center justify-between p-6 border-b ${isDark ? 'border-dark-divider' : 'border-neutral-divider'}">
                             <h2 className={`text-xl font-semibold ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
                                 {editingId ? t('editFarm') : t('addNewFarm')}
                             </h2>
@@ -337,127 +337,142 @@ const Farms = () => {
                             </button>
                         </div>
 
-                        <div className="space-y-4">
-                            {/* Farm Name */}
-                            <div>
-                                <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
-                                    Farm Name
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className={`w-full px-4 py-2 rounded-lg border ${errors.name ? 'border-red-500' : isDark ? 'border-dark-divider' : 'border-neutral-divider'
-                                        } ${isDark ? 'bg-dark-bg text-dark-text' : 'bg-white text-neutral-text'}`}
-                                    placeholder="e.g., Main Farm"
-                                />
-                                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-                            </div>
-
-                            {/* Location */}
-                            <div>
-                                <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
-                                    Location
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.location}
-                                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                                    className={`w-full px-4 py-2 rounded-lg border ${errors.location ? 'border-red-500' : isDark ? 'border-dark-divider' : 'border-neutral-divider'
-                                        } ${isDark ? 'bg-dark-bg text-dark-text' : 'bg-white text-neutral-text'}`}
-                                    placeholder="e.g., Bangalore, Karnataka"
-                                />
-                                {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
-                            </div>
-
-                            {/* Farm Size */}
-                            <div className="grid grid-cols-2 gap-4">
+                        <div className="flex-1 overflow-y-auto p-6">
+                            <div className="space-y-4">
+                                {/* Farm Name */}
                                 <div>
                                     <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
-                                        Farm Size
+                                        Farm Name
                                     </label>
                                     <input
-                                        type="number"
-                                        value={formData.size}
-                                        onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                                        className={`w-full px-4 py-2 rounded-lg border ${errors.size ? 'border-red-500' : isDark ? 'border-dark-divider' : 'border-neutral-divider'
+                                        type="text"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors.name ? 'border-red-500' : isDark ? 'border-dark-divider' : 'border-neutral-divider'
                                             } ${isDark ? 'bg-dark-bg text-dark-text' : 'bg-white text-neutral-text'}`}
-                                        placeholder="5.5"
-                                        step="0.1"
+                                        placeholder="e.g., Main Farm"
                                     />
-                                    {errors.size && <p className="text-red-500 text-sm mt-1">{errors.size}</p>}
+                                    {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                                 </div>
+
+                                {/* Location */}
                                 <div>
                                     <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
-                                        Unit
+                                        Location
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={formData.location}
+                                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors.location ? 'border-red-500' : isDark ? 'border-dark-divider' : 'border-neutral-divider'
+                                            } ${isDark ? 'bg-dark-bg text-dark-text' : 'bg-white text-neutral-text'}`}
+                                        placeholder="e.g., Bangalore, Karnataka"
+                                    />
+                                    {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
+                                </div>
+
+                                {/* Farm Size */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
+                                            Farm Size
+                                        </label>
+                                        <input
+                                            type="number"
+                                            value={formData.size}
+                                            onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                                            className={`w-full px-4 py-2 rounded-lg border ${errors.size ? 'border-red-500' : isDark ? 'border-dark-divider' : 'border-neutral-divider'
+                                                } ${isDark ? 'bg-dark-bg text-dark-text' : 'bg-white text-neutral-text'}`}
+                                            placeholder="5.5"
+                                            step="0.1"
+                                        />
+                                        {errors.size && <p className="text-red-500 text-sm mt-1">{errors.size}</p>}
+                                    </div>
+                                    <div>
+                                        <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
+                                            Unit
+                                        </label>
+                                        <select
+                                            value={formData.unit}
+                                            onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                                            className={`w-full px-4 py-2 rounded-lg border ${isDark ? 'border-dark-divider bg-dark-bg text-dark-text' : 'border-neutral-divider bg-white text-neutral-text'}`}
+                                        >
+                                            <option>acres</option>
+                                            <option>hectares</option>
+                                            <option>sq.m</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* Crops */}
+                                <div>
+                                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
+                                        Crops (comma-separated)
+                                    </label>
+                                    <textarea
+                                        value={formData.crops}
+                                        onChange={(e) => setFormData({ ...formData, crops: e.target.value })}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors.crops ? 'border-red-500' : isDark ? 'border-dark-divider' : 'border-neutral-divider'
+                                            } ${isDark ? 'bg-dark-bg text-dark-text' : 'bg-white text-neutral-text'}`}
+                                        placeholder="e.g., Rice, Wheat, Vegetables"
+                                        rows="3"
+                                    />
+                                    {errors.crops && <p className="text-red-500 text-sm mt-1">{errors.crops}</p>}
+                                </div>
+
+                                {/* Status */}
+                                <div>
+                                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
+                                        Status
                                     </label>
                                     <select
-                                        value={formData.unit}
-                                        onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                                        value={formData.status}
+                                        onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                                         className={`w-full px-4 py-2 rounded-lg border ${isDark ? 'border-dark-divider bg-dark-bg text-dark-text' : 'border-neutral-divider bg-white text-neutral-text'}`}
                                     >
-                                        <option>acres</option>
-                                        <option>hectares</option>
-                                        <option>sq.m</option>
+                                        <option>Active</option>
+                                        <option>Inactive</option>
                                     </select>
                                 </div>
-                            </div>
 
-                            {/* Crops */}
-                            <div>
-                                <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
-                                    Crops (comma-separated)
-                                </label>
-                                <textarea
-                                    value={formData.crops}
-                                    onChange={(e) => setFormData({ ...formData, crops: e.target.value })}
-                                    className={`w-full px-4 py-2 rounded-lg border ${errors.crops ? 'border-red-500' : isDark ? 'border-dark-divider' : 'border-neutral-divider'
-                                        } ${isDark ? 'bg-dark-bg text-dark-text' : 'bg-white text-neutral-text'}`}
-                                    placeholder="e.g., Rice, Wheat, Vegetables"
-                                    rows="3"
-                                />
-                                {errors.crops && <p className="text-red-500 text-sm mt-1">{errors.crops}</p>}
-                            </div>
-
-                            {/* Status */}
-                            <div>
-                                <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-dark-text' : 'text-neutral-text'}`}>
-                                    Status
-                                </label>
-                                <select
-                                    value={formData.status}
-                                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                                    className={`w-full px-4 py-2 rounded-lg border ${isDark ? 'border-dark-divider bg-dark-bg text-dark-text' : 'border-neutral-divider bg-white text-neutral-text'}`}
-                                >
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                </select>
-                            </div>
-
-                            {/* Buttons */}
-                            <div className="flex gap-3 pt-4 w-full">
-                                <button
-                                    onClick={() => setShowModal(false)}
-                                    className={`flex-1 px-4 py-3 rounded-lg font-medium ${isDark ? 'bg-dark-bg text-dark-text hover:bg-dark-bg/80' : 'bg-neutral-bg text-neutral-text hover:bg-neutral-bg/80'}`}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={handleSaveFarm}
-                                    className="flex-1 btn-primary flex items-center justify-center font-medium"
-                                >
-                                    <Save size={16} className="mr-2" />
-                                    {editingId ? 'Update Farm' : 'Add Farm'}
-                                </button>
+                                {/* Buttons */}
+                                <div className="flex gap-3 pt-4 w-full">
+                                    <button
+                                        onClick={() => setShowModal(false)}
+                                        className={`flex-1 px-4 py-3 rounded-lg font-medium ${isDark ? 'bg-dark-bg text-dark-text hover:bg-dark-bg/80' : 'bg-neutral-bg text-neutral-text hover:bg-neutral-bg/80'}`}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleSaveFarm}
+                                        className="flex-1 btn-primary flex items-center justify-center font-medium"
+                                    >
+                                        <Save size={16} className="mr-2" />
+                                        {editingId ? 'Update Farm' : 'Add Farm'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            )}
 
-            <BottomNav />
-        </div>
-    )
+                        <div className={`sticky bottom-0 flex gap-3 p-6 border-t ${isDark ? 'bg-dark-surface border-dark-divider' : 'bg-white border-neutral-divider'}`}>
+                            <button
+                                onClick={() => setShowModal(false)}
+                                className={`flex-1 px-4 py-3 rounded-lg font-medium ${isDark ? 'bg-dark-bg text-dark-text hover:bg-dark-bg/80' : 'bg-neutral-bg text-neutral-text hover:bg-neutral-bg/80'}`}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleSaveFarm}
+                                className="flex-1 btn-primary flex items-center justify-center font-medium"
+                            >
+                                <Save size={16} className="mr-2" />
+                                {editingId ? 'Update Farm' : 'Add Farm'}
+                            </button>
+                        </div>
+
+                        <BottomNav />
+                    </div>
+                    )
 }
 
-export default Farms
+                    export default Farms
